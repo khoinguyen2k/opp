@@ -10,17 +10,16 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class BombermanGame extends Application {
-
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    //remove final to read value
+    public static int WIDTH = 20;
+    public static int HEIGHT = 15;
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -34,6 +33,9 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        //createMap chuyen len dau de doc WIDTH, HEIGHT tu file map
+        createMap();
+
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -59,57 +61,52 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        createMap();
-
 
     }
 
 
-
     public void createMap() throws IOException {
 
-        URL absPath = new URL("https://raw.githubusercontent.com/bqcuong/bomberman-starter/starter-2/res/levels/Level1.txt");
-        System.out.println(absPath);
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(absPath.openStream()));
-        String data = br.readLine();
+        Scanner scanner = new Scanner(new File("res/levels/Level1.txt"));
+        int _level = scanner.nextInt();
+        int _height = scanner.nextInt();
+        HEIGHT = _height;
+        int _width = scanner.nextInt();
+        WIDTH = _width;
+        scanner.nextLine(); //fix scanner bug
 
-        StringTokenizer tokens = new StringTokenizer(data);
-
-        int _level = Integer.parseInt(tokens.nextToken());
-        int _height = Integer.parseInt(tokens.nextToken());
-        int _width = Integer.parseInt(tokens.nextToken());
-        String[] _lineTiles = new String[_height];
-
-        for (int i = 0; i < _height; ++i) {
-            _lineTiles[i] = br.readLine().substring(0, _width);
+        char[][] _lineTiles = new char[_height][_width];
+        for (int i = 0; i < _height; i++) {
+            String line = scanner.nextLine();
+            for (int j = 0; j < _width; j++)
+                _lineTiles[i][j] = line.charAt(j);
         }
 
-        br.close();
+        scanner.close();
 
-        for (int y = 0; y < _height; y++) {
-            for (int x = 0; x < _width; x++) {
 
-                switch (_lineTiles[y].charAt(x)) {
-                    case '#':
-                    {
+        for (int y = 0; y < _height; y++)
+            for (int x = 0; x < _width; x++)
+                switch (_lineTiles[y][x]) {
+                    case '#': {
                         Entity object = new Wall(x, y, Sprite.wall.getFxImage());
                         stillObjects.add(object);
                         break;
                     }
 
-                    case '*':
-                    {
+                    case '*': {
                         Entity object1 = new Brick(x, y, Sprite.brick.getFxImage());
                         stillObjects.add(object1);
                         break;
                     }
+
                     case '1':
                         Entity object2 = new Grass(x, y, Sprite.grass.getFxImage());
                         stillObjects.add(object2);
                         Entity object = new Balloon(x, y, Sprite.balloom_left1.getFxImage());
                         entities.add(object);
                         break;
+
                     case 'p':
                         Entity object3 = new Grass(x, y, Sprite.grass.getFxImage());
                         stillObjects.add(object3);
@@ -117,21 +114,18 @@ public class BombermanGame extends Application {
                         entities.add(bomberman);
                         break;
 
-
                     case ' ':
                         Entity object4 = new Grass(x, y, Sprite.grass.getFxImage());
                         stillObjects.add(object4);
-
                         break;
 
+                    default:
+                        break;
                 }
 
 
-            }
-        }
-
-
     }
+
     public void update() {
         entities.forEach(Entity::update);
     }
