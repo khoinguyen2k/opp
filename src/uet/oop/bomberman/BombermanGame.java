@@ -7,24 +7,25 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
-    
+
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    private static List<Entity> entities = new ArrayList<>();
+    private static List<Entity> stillObjects = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -32,7 +33,7 @@ public class BombermanGame extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -46,6 +47,7 @@ public class BombermanGame extends Application {
 
         // Them scene vao stage
         stage.setScene(scene);
+        stage.setTitle("BombermanGame");
         stage.show();
 
         AnimationTimer timer = new AnimationTimer() {
@@ -59,25 +61,77 @@ public class BombermanGame extends Application {
 
         createMap();
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+
     }
 
-    public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
+
+
+    public void createMap() throws IOException {
+
+        URL absPath = new URL("https://raw.githubusercontent.com/bqcuong/bomberman-starter/starter-2/res/levels/Level1.txt");
+        System.out.println(absPath);
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(absPath.openStream()));
+        String data = br.readLine();
+
+        StringTokenizer tokens = new StringTokenizer(data);
+
+        int _level = Integer.parseInt(tokens.nextToken());
+        int _height = Integer.parseInt(tokens.nextToken());
+        int _width = Integer.parseInt(tokens.nextToken());
+        String[] _lineTiles = new String[_height];
+
+        for (int i = 0; i < _height; ++i) {
+            _lineTiles[i] = br.readLine().substring(0, _width);
+        }
+
+        br.close();
+
+        for (int y = 0; y < _height; y++) {
+            for (int x = 0; x < _width; x++) {
+
+                switch (_lineTiles[y].charAt(x)) {
+                    case '#':
+                    {
+                        Entity object = new Wall(x, y, Sprite.wall.getFxImage());
+                        stillObjects.add(object);
+                        break;
+                    }
+
+                    case '*':
+                    {
+                        Entity object1 = new Brick(x, y, Sprite.brick.getFxImage());
+                        stillObjects.add(object1);
+                        break;
+                    }
+                    case '1':
+                        Entity object2 = new Grass(x, y, Sprite.grass.getFxImage());
+                        stillObjects.add(object2);
+                        Entity object = new Balloon(x, y, Sprite.balloom_left1.getFxImage());
+                        entities.add(object);
+                        break;
+                    case 'p':
+                        Entity object3 = new Grass(x, y, Sprite.grass.getFxImage());
+                        stillObjects.add(object3);
+                        Entity bomberman = new Bomber(x, y, Sprite.player_right.getFxImage());
+                        entities.add(bomberman);
+                        break;
+
+
+                    case ' ':
+                        Entity object4 = new Grass(x, y, Sprite.grass.getFxImage());
+                        stillObjects.add(object4);
+
+                        break;
+
                 }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
-                }
-                stillObjects.add(object);
+
+
             }
         }
-    }
 
+
+    }
     public void update() {
         entities.forEach(Entity::update);
     }
@@ -88,3 +142,4 @@ public class BombermanGame extends Application {
         entities.forEach(g -> g.render(gc));
     }
 }
+
