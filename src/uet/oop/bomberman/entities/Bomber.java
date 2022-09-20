@@ -11,6 +11,28 @@ public class Bomber extends Entity {
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
+    public void setXY (int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public  int getX () {
+        return  this.x;
+    }
+    public  int getY () {
+        return this.y;
+    }
+    public void moveRight() {
+        this.x +=5;
+    }
+    public void moveLeft() {
+        this.x -=5;
+    }
+    public void moveDown() {
+        this.y +=5;
+    }
+    public void moveUp() {
+        this.y -=5;
+    }
 
     @Override
     public void update() {

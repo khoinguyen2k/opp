@@ -2,10 +2,12 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
@@ -25,6 +27,7 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private static List<Entity> entities = new ArrayList<>();
     private static List<Entity> stillObjects = new ArrayList<>();
+    Bomber bomberman;
 
 
     public static void main(String[] args) {
@@ -51,6 +54,25 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.setTitle("BombermanGame");
         stage.show();
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case RIGHT:
+                        bomberman.moveRight();
+                        break;
+                    case DOWN:
+                        bomberman.moveDown();
+                        break;
+                    case LEFT:
+                        bomberman.moveLeft();
+                        break;
+                    case UP:
+                        bomberman.moveUp();
+                        break;
+                }
+            }
+        });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -110,7 +132,7 @@ public class BombermanGame extends Application {
                     case 'p':
                         Entity object3 = new Grass(x, y, Sprite.grass.getFxImage());
                         stillObjects.add(object3);
-                        Entity bomberman = new Bomber(x, y, Sprite.player_right.getFxImage());
+                         bomberman = new Bomber(x, y, Sprite.player_right.getFxImage());
                         entities.add(bomberman);
                         break;
 
