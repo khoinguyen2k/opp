@@ -8,16 +8,16 @@ public class Balloon extends Entity {
     }
 
     public void moveRight() {
-        this.x +=5;
+        this.x +=2;
     }
     public void moveLeft() {
-        this.x -=5;
+        this.x -=2;
     }
     public void moveDown() {
-        this.y +=5;
+        this.y +=2;
     }
     public void moveUp() {
-        this.y -=5;
+        this.y -=2;
     }
 
     @Override
