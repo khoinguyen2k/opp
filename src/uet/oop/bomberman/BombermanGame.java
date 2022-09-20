@@ -31,6 +31,7 @@ public class BombermanGame extends Application {
     private static List<Balloon> enemyObjects = new ArrayList<>();
     public  static long start = System.currentTimeMillis();
     Bomber bomberman;
+    List<Coordination> unTravelableList = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -63,16 +64,61 @@ public class BombermanGame extends Application {
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
                     case RIGHT:
-                        bomberman.moveRight();
+                        boolean check3 = true;
+                        for (Coordination i : unTravelableList) {
+
+                            if (checkCollision(bomberman.getX()+5, bomberman.getY()
+                                    , i.getX(), i.getY()
+                            )) {
+
+                                System.out.println(""+bomberman.getX()+" "+bomberman.getY());
+                                System.out.println(""+i.getX()+" "+i.getY());
+                                check3 = false;
+                            }
+
+                        }
+
+                        if (check3)
+                            bomberman.moveRight();
                         break;
                     case DOWN:
-                        bomberman.moveDown();
+                        boolean check2 = true;
+                        for (Coordination i : unTravelableList) {
+                            if (checkCollision(bomberman.getX(), bomberman.getY() + 5
+                                    , i.getX(), i.getY()
+                            )) {
+                                check2 = false;
+                            }
+
+                        }
+
+                        if (check2) bomberman.moveDown();
                         break;
                     case LEFT:
-                        bomberman.moveLeft();
+                        boolean check1 = true;
+                        for (Coordination i : unTravelableList) {
+                            if (checkCollision(bomberman.getX()-5, bomberman.getY()
+                                    , i.getX(), i.getY()
+                            )) {
+                                check1 = false;
+                            }
+
+                        }
+
+                        if (check1) bomberman.moveLeft();
                         break;
                     case UP:
-                        bomberman.moveUp();
+                        boolean check = true;
+                        for (Coordination i : unTravelableList) {
+                            if (checkCollision(bomberman.getX(), bomberman.getY() - 5
+                                    , i.getX(), i.getY()
+                            )) {
+                                check = false;
+                            }
+
+                        }
+
+                        if (check) bomberman.moveUp();
                         break;
                 }
             }
@@ -89,6 +135,12 @@ public class BombermanGame extends Application {
 
 
     }
+    public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
+        return (Math.abs((left_a-left_b) )< 24 && Math.abs((top_a-top_b) )< 24);
+    }
+
+
+
 
 
     public void createMap() throws IOException {
@@ -117,12 +169,14 @@ public class BombermanGame extends Application {
                     case '#': {
                         Entity object = new Wall(x, y, Sprite.wall.getFxImage());
                         stillObjects.add(object);
+                        unTravelableList.add(new Coordination(x,y));
                         break;
                     }
 
                     case '*': {
                         Entity object1 = new Brick(x, y, Sprite.brick.getFxImage());
                         stillObjects.add(object1);
+                        unTravelableList.add(new Coordination(x,y));
                         break;
                     }
 

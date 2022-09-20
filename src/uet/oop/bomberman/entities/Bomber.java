@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Bomber extends Entity {
+    public int dx = 0 ,dy = 0;
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -23,15 +24,19 @@ public class Bomber extends Entity {
     }
     public void moveRight() {
         this.x +=5;
+        dx = 5;
     }
     public void moveLeft() {
         this.x -=5;
+        dx = -5;
     }
     public void moveDown() {
         this.y +=5;
+        dy = 5;
     }
     public void moveUp() {
         this.y -=5;
+        dy = -5;
     }
 
     @Override
