@@ -156,11 +156,8 @@ public class BombermanGame extends Application {
 
         for (int i=0 ; i< enemyObjects.size(); i ++) {
             int rand = (int)(Math.floor(Math.random()*4));
-
-// ...
             long finish = System.currentTimeMillis();
             long timeElapsed = (finish - start) % 1000;
-            System.out.println(timeElapsed);
             if (timeElapsed  > 500) {
                 enemyObjects.get(i).moveRight();
             }
