@@ -27,6 +27,8 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private static List<Entity> entities = new ArrayList<>();
     private static List<Entity> stillObjects = new ArrayList<>();
+
+    private static List<Balloon> enemyObjects = new ArrayList<>();
     Bomber bomberman;
 
 
@@ -125,8 +127,9 @@ public class BombermanGame extends Application {
                     case '1':
                         Entity object2 = new Grass(x, y, Sprite.grass.getFxImage());
                         stillObjects.add(object2);
-                        Entity object = new Balloon(x, y, Sprite.balloom_left1.getFxImage());
+                        Balloon object = new Balloon(x, y, Sprite.balloom_left1.getFxImage());
                         entities.add(object);
+                         enemyObjects.add(object);
                         break;
 
                     case 'p':
@@ -147,9 +150,28 @@ public class BombermanGame extends Application {
 
 
     }
+    public void baloonMove() {
+
+        for (int i=0 ; i< enemyObjects.size(); i ++) {
+            int rand = (int)(Math.floor(Math.random()*4));
+            if (rand == 0) {
+                enemyObjects.get(i).moveRight();
+            }
+            else if (rand == 1) {
+                enemyObjects.get(i).moveLeft();
+            }
+            else if (rand == 2) {
+                enemyObjects.get(i).moveDown();
+            }
+            else if (rand == 3) {
+                enemyObjects.get(i).moveUp();
+            }
+        }
+    }
 
     public void update() {
         entities.forEach(Entity::update);
+        baloonMove();
     }
 
     public void render() {

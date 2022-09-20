@@ -7,6 +7,19 @@ public class Balloon extends Entity {
         super(xUnit, yUnit, img);
     }
 
+    public void moveRight() {
+        this.x +=5;
+    }
+    public void moveLeft() {
+        this.x -=5;
+    }
+    public void moveDown() {
+        this.y +=5;
+    }
+    public void moveUp() {
+        this.y -=5;
+    }
+
     @Override
     public void update() {
 
