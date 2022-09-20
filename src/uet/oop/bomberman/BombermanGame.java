@@ -71,8 +71,6 @@ public class BombermanGame extends Application {
                                     , i.getX(), i.getY()
                             )) {
 
-                                System.out.println(""+bomberman.getX()+" "+bomberman.getY());
-                                System.out.println(""+i.getX()+" "+i.getY());
                                 check3 = false;
                             }
 
