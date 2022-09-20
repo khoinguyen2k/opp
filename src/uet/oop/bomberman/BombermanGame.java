@@ -29,6 +29,7 @@ public class BombermanGame extends Application {
     private static List<Entity> stillObjects = new ArrayList<>();
 
     private static List<Balloon> enemyObjects = new ArrayList<>();
+    public  static long start = System.currentTimeMillis();
     Bomber bomberman;
 
 
@@ -38,6 +39,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
         //createMap chuyen len dau de doc WIDTH, HEIGHT tu file map
         createMap();
 
@@ -154,18 +156,18 @@ public class BombermanGame extends Application {
 
         for (int i=0 ; i< enemyObjects.size(); i ++) {
             int rand = (int)(Math.floor(Math.random()*4));
-            if (rand == 0) {
+
+// ...
+            long finish = System.currentTimeMillis();
+            long timeElapsed = (finish - start) % 1000;
+            System.out.println(timeElapsed);
+            if (timeElapsed  > 500) {
                 enemyObjects.get(i).moveRight();
             }
-            else if (rand == 1) {
+            else if (timeElapsed  < 500) {
                 enemyObjects.get(i).moveLeft();
             }
-            else if (rand == 2) {
-                enemyObjects.get(i).moveRight();
-            }
-            else if (rand == 3) {
-                enemyObjects.get(i).moveLeft();
-            }
+
         }
     }
 
