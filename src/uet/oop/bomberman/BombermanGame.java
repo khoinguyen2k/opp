@@ -161,10 +161,10 @@ public class BombermanGame extends Application {
                 enemyObjects.get(i).moveLeft();
             }
             else if (rand == 2) {
-                enemyObjects.get(i).moveDown();
+                enemyObjects.get(i).moveRight();
             }
             else if (rand == 3) {
-                enemyObjects.get(i).moveUp();
+                enemyObjects.get(i).moveLeft();
             }
         }
     }
