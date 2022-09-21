@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BombermanGame extends Application {
+    public static final int mainCharacterSpeed = 5;
     //remove final to read value
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
@@ -32,8 +33,9 @@ public class BombermanGame extends Application {
     private static List<Balloon> enemyObjects = new ArrayList<>();
     public static long start = System.currentTimeMillis();
     Bomber bomberman;
-    List<Coordination> unTravelableList = new ArrayList<>();
-    Board board =new Board();
+
+    static Board board =new Board();
+    public static List<Coordination> unTravelableList = board.getUnTravelableList();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -144,7 +146,7 @@ public class BombermanGame extends Application {
     }
 
     public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
-        return (Math.abs((left_a-left_b) )< 24 && Math.abs((top_a-top_b) )< 24);
+        return (Math.abs((left_a-left_b) )< Sprite.SCALED_SIZE-5 && Math.abs((top_a-top_b) )< Sprite.SCALED_SIZE-5);
     }
 
 

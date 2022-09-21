@@ -6,8 +6,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+import static uet.oop.bomberman.BombermanGame.mainCharacterSpeed;
+
 public class Bomber extends Entity {
-    public int dx = 0 ,dy = 0;
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -23,20 +24,20 @@ public class Bomber extends Entity {
         return this.y;
     }
     public void moveRight() {
-        this.x +=5;
-        dx = 5;
+        this.x +=mainCharacterSpeed;
+
     }
     public void moveLeft() {
-        this.x -=5;
-        dx = -5;
+        this.x -=mainCharacterSpeed;
+
     }
     public void moveDown() {
-        this.y +=5;
-        dy = 5;
+        this.y +=mainCharacterSpeed;
+
     }
     public void moveUp() {
-        this.y -=5;
-        dy = -5;
+        this.y -=mainCharacterSpeed;
+
     }
 
     @Override

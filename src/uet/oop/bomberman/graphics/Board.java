@@ -1,6 +1,7 @@
 package uet.oop.bomberman.graphics;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.Coordination;
 import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
@@ -8,12 +9,25 @@ import uet.oop.bomberman.entities.Wall;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Board {
     private Entity[][] playGround;
     private int height;
     private int width;
+
+    public static List<Coordination> getUnTravelableList() {
+        return unTravelableList;
+    }
+
+    public static void setUnTravelableList(List<Coordination> unTravelableList) {
+        Board.unTravelableList = unTravelableList;
+    }
+
+    public static List<Coordination> unTravelableList = new ArrayList<>();
+
 
     public static char[][] readMap() {
         char[][] data = null;
@@ -50,19 +64,24 @@ public class Board {
                 switch (val) {
                     case '#':
                         playGround[i][j] =new Wall(j, i, Sprite.wall.getFxImage());
+                        unTravelableList.add(new Coordination(j,i));
+
                         break;
 
                     case '*':
                         playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
+                        unTravelableList.add(new Coordination(j,i));
                         break;
 
                     case 'b':case 'f':case 's':
                         playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
+                        unTravelableList.add(new Coordination(j,i));
                         //will add in func createEntities
                         break;
 
                     case 'p':
                         playGround[i][j] =new Grass(j, i, Sprite.grass.getFxImage());
+
                         //will add in func createEntities
                         break;
 
