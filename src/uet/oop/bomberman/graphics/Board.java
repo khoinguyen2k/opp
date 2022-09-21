@@ -6,6 +6,7 @@ import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.items.Bomb;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +15,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Board {
-    private Entity[][] playGround;
-    private int height;
-    private int width;
+    protected Entity[][] playGround;
+    protected int height;
+    protected int width;
 
     public static List<Coordination> getUnTravelableList() {
         return unTravelableList;

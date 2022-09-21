@@ -5,7 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.Bomb;
+import uet.oop.bomberman.items.BombList;
 
 import static uet.oop.bomberman.BombermanGame.mainCharacterSpeed;
 
@@ -52,5 +55,19 @@ public class Bomber extends Entity {
     public void setImg(Image im)
     {
          this.img = im;
+    }
+
+    private int bombAmount =1;
+    public int getBombAmount() {
+        return bombAmount;
+    }
+    public void placeBomb(BombList bomblist, int x, int y) {
+        if (!bomblist.hasBomb(x, y) &&bombAmount >0) {
+            bomblist.addBomb(x, y);
+            bombAmount--;
+        }
+    }
+    public void restoreABomb() {
+        bombAmount++;
     }
 }

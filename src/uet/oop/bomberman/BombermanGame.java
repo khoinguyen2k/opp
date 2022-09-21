@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.BombList;
 
 import java.io.IOException;
 import java.io.File;
@@ -35,6 +36,7 @@ public class BombermanGame extends Application {
     Bomber bomberman;
 
     static Board board =new Board();
+    static BombList bombList =new BombList(board.getHeight(), board.getWidth());
     public static List<Coordination> unTravelableList = board.getUnTravelableList();
 
     public static void main(String[] args) {
@@ -125,7 +127,7 @@ public class BombermanGame extends Application {
                     case Z:
                         int bombXUnit =(bomberman.getX() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
                         int bombYUnit =(bomberman.getY() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
-                        //have to remove due to new board system
+                        bomberman.placeBomb(bombList, bombXUnit, bombXUnit);
                         break;
                 }
             }
@@ -177,11 +179,13 @@ public class BombermanGame extends Application {
     public void update() {
         entities.forEach(Entity::update);
         baloonMove();
+        bombList.handleExploding(bomberman);
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         board.render(gc);
+        bombList.render(gc);
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
