@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.mainCharacterSpeed;
 
@@ -25,23 +26,31 @@ public class Bomber extends Entity {
     }
     public void moveRight() {
         this.x +=mainCharacterSpeed;
+        this.img = Sprite.player_right.getFxImage();
 
     }
     public void moveLeft() {
         this.x -=mainCharacterSpeed;
+        this.img = Sprite.player_left.getFxImage();
 
     }
     public void moveDown() {
         this.y +=mainCharacterSpeed;
+        this.img = Sprite.player_down.getFxImage();
 
     }
     public void moveUp() {
         this.y -=mainCharacterSpeed;
+        this.img = Sprite.player_up.getFxImage();
 
     }
 
     @Override
     public void update() {
 
+    }
+    public void setImg(Image im)
+    {
+         this.img = im;
     }
 }

@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.graphics.Sprite;
 
 public class Balloon extends Entity {
     public Balloon(int xUnit, int yUnit, Image img) {
@@ -8,10 +9,12 @@ public class Balloon extends Entity {
     }
 
     public void moveRight() {
-        this.x +=2;
+        this.x +=1;
+        this.img= Sprite.balloom_right1.getFxImage();
     }
     public void moveLeft() {
-        this.x -=2;
+        this.x -=1;
+        this.img= Sprite.balloom_left1.getFxImage();
     }
     public void moveDown() {
         this.y +=2;
