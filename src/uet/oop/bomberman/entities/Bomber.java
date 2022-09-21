@@ -58,9 +58,6 @@ public class Bomber extends Entity {
     }
 
     private int bombAmount =1;
-    public int getBombAmount() {
-        return bombAmount;
-    }
     public void placeBomb(BombList bomblist, int x, int y) {
         if (!bomblist.hasBomb(x, y) &&bombAmount >0) {
             bomblist.addBomb(x, y);

@@ -12,7 +12,7 @@ public class BombList extends Board {
         return playGround[x][y] !=null;
     }
     public void addBomb(int x, int y) {
-        playGround[x][y] =new Bomb(y, x, Sprite.bomb.getFxImage());
+        playGround[x][y] =new Bomb(x, y, Sprite.bomb.getFxImage());
     }
     public void handleExploding(Bomber bomberman) {
         for (int i =0; i <height; i++)
@@ -24,6 +24,5 @@ public class BombList extends Board {
                         bomberman.restoreABomb();
                     }
                 }
-        System.out.println(bomberman.getBombAmount());
     }
 }
