@@ -127,7 +127,7 @@ public class BombermanGame extends Application {
                     case Z:
                         int bombXUnit =(bomberman.getX() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
                         int bombYUnit =(bomberman.getY() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
-                        bomberman.placeBomb(bombList, bombXUnit, bombXUnit);
+                        bomberman.placeBomb(bombList, bombXUnit, bombYUnit);
                         break;
                 }
             }
