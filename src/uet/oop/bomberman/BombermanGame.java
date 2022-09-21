@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.IOException;
@@ -29,10 +30,10 @@ public class BombermanGame extends Application {
     private static List<Entity> stillObjects = new ArrayList<>();
 
     private static List<Balloon> enemyObjects = new ArrayList<>();
-    public  static long start = System.currentTimeMillis();
+    public static long start = System.currentTimeMillis();
     Bomber bomberman;
     List<Coordination> unTravelableList = new ArrayList<>();
-
+    Board board =new Board();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -40,9 +41,9 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
         //createMap chuyen len dau de doc WIDTH, HEIGHT tu file map
         createMap();
+        createEntity();
 
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
@@ -71,6 +72,8 @@ public class BombermanGame extends Application {
                                     , i.getX(), i.getY()
                             )) {
 
+                                System.out.println(""+bomberman.getX()+" "+bomberman.getY());
+                                System.out.println(""+i.getX()+" "+i.getY());
                                 check3 = false;
                             }
 
@@ -118,6 +121,12 @@ public class BombermanGame extends Application {
 
                         if (check) bomberman.moveUp();
                         break;
+
+                    case Z:
+                        int bombXUnit =(bomberman.getX() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
+                        int bombYUnit =(bomberman.getY() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
+                        //have to remove due to new board system
+                        break;
                 }
             }
         });
@@ -133,77 +142,50 @@ public class BombermanGame extends Application {
 
 
     }
+
     public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
         return (Math.abs((left_a-left_b) )< 24 && Math.abs((top_a-top_b) )< 24);
     }
 
 
 
+    public void createMap() {
+        HEIGHT =board.getHeight();
+        WIDTH =board.getWidth();
+    }
 
-
-    public void createMap() throws IOException {
-
-        Scanner scanner = new Scanner(new File("res/levels/Level1.txt"));
-        int _level = scanner.nextInt();
-        int _height = scanner.nextInt();
-        HEIGHT = _height;
-        int _width = scanner.nextInt();
-        WIDTH = _width;
-        scanner.nextLine(); //fix scanner bug
-
-        char[][] _lineTiles = new char[_height][_width];
-        for (int i = 0; i < _height; i++) {
-            String line = scanner.nextLine();
-            for (int j = 0; j < _width; j++)
-                _lineTiles[i][j] = line.charAt(j);
-        }
-
-        scanner.close();
-
-
-        for (int y = 0; y < _height; y++)
-            for (int x = 0; x < _width; x++)
-                switch (_lineTiles[y][x]) {
-                    case '#': {
-                        Entity object = new Wall(x, y, Sprite.wall.getFxImage());
-                        stillObjects.add(object);
-                        unTravelableList.add(new Coordination(x,y));
-                        break;
-                    }
-
-                    case '*': {
-                        Entity object1 = new Brick(x, y, Sprite.brick.getFxImage());
-                        stillObjects.add(object1);
-                        unTravelableList.add(new Coordination(x,y));
-                        break;
-                    }
-
-                    case '1':
-                        Entity object2 = new Grass(x, y, Sprite.grass.getFxImage());
-                        stillObjects.add(object2);
-                        Balloon object = new Balloon(x, y, Sprite.balloom_left1.getFxImage());
-                        entities.add(object);
-                         enemyObjects.add(object);
-                        break;
-
+    public void createEntity() {
+        char[][] data =Board.readMap();
+        for (int x =0; x <data.length; x++)
+            for (int y =0; y <data[0].length; y++)
+                switch (data[x][y]) {
                     case 'p':
-                        Entity object3 = new Grass(x, y, Sprite.grass.getFxImage());
-                        stillObjects.add(object3);
-                         bomberman = new Bomber(x, y, Sprite.player_right.getFxImage());
+                        bomberman =new Bomber(y, x, Sprite.player_right.getFxImage());
                         entities.add(bomberman);
                         break;
-
-                    case ' ':
-                        Entity object4 = new Grass(x, y, Sprite.grass.getFxImage());
-                        stillObjects.add(object4);
+                    case '1':
+                        Balloon object = new Balloon(y, x, Sprite.balloom_left1.getFxImage());
+                        entities.add(object);
+                        enemyObjects.add(object);
                         break;
-
-                    default:
+                    case '2':
                         break;
+                    default: break;
                 }
-
-
     }
+
+    public void update() {
+        entities.forEach(Entity::update);
+        baloonMove();
+    }
+
+    public void render() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        board.render(gc);
+        stillObjects.forEach(g -> g.render(gc));
+        entities.forEach(g -> g.render(gc));
+    }
+
     public void baloonMove() {
 
         for (int i=0 ; i< enemyObjects.size(); i ++) {
@@ -220,15 +202,5 @@ public class BombermanGame extends Application {
         }
     }
 
-    public void update() {
-        entities.forEach(Entity::update);
-        baloonMove();
-    }
-
-    public void render() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
-    }
 }
 
