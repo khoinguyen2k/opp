@@ -21,6 +21,7 @@ class Timer {
         }
     }
 }
+
 public class Bomb extends Entity {
     private Timer timer;
     public Bomb(int xUnit, int yUnit, Image img) {

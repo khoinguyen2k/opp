@@ -47,7 +47,7 @@ public class BombermanGame extends Application {
     public void start(Stage stage) throws IOException {
         //createMap chuyen len dau de doc WIDTH, HEIGHT tu file map
         createMap();
-        createEntity();
+        createEntities();
 
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
@@ -125,9 +125,9 @@ public class BombermanGame extends Application {
                         break;
 
                     case Z:
-                        int bombXUnit =(bomberman.getX() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
-                        int bombYUnit =(bomberman.getY() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
-                        bomberman.placeBomb(bombList, bombXUnit, bombYUnit);
+                        int bombX =(bomberman.getY() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
+                        int bombY =(bomberman.getX() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
+                        bomberman.placeBomb(bombList, bombX, bombY);
                         break;
                 }
             }
@@ -156,10 +156,10 @@ public class BombermanGame extends Application {
         WIDTH =board.getWidth();
     }
 
-    public void createEntity() {
+    public void createEntities() {
         char[][] data =Board.readMap();
-        for (int x =0; x <data.length; x++)
-            for (int y =0; y <data[0].length; y++)
+        for (int x =0; x <data.length; x++) //numRow
+            for (int y =0; y <data[0].length; y++) //numCol
                 switch (data[x][y]) {
                     case 'p':
                         bomberman =new Bomber(y, x, Sprite.player_right.getFxImage());

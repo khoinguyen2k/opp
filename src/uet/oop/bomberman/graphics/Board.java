@@ -82,7 +82,6 @@ public class Board {
 
                     case 'p':
                         playGround[i][j] =new Grass(j, i, Sprite.grass.getFxImage());
-
                         //will add in func createEntities
                         break;
 
