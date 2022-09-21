@@ -56,7 +56,7 @@ public class Board {
                         playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
                         break;
 
-                    case 'b':case 'f':case 's':
+                    case 'b':case 'f':case 's':case 'x':
                         playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
                         //will add in func createEntities
                         break;
