@@ -15,7 +15,7 @@ public class FlameSprite {
     private Timer timer;
     public FlameSprite(Board board, int x, int y) {
         timer =new Timer();
-        flameList.add(new Flame(x, y, Sprite.bomb_exploded.getFxImage()));
+        flameList.add(new Flame(y, x, Sprite.bomb_exploded.getFxImage()));
         for (int i =x -1; i >=x -power; i--) {
             if (i <0) break;
             if (board.getEntity(i, y) instanceof Wall) break;
@@ -45,7 +45,7 @@ public class FlameSprite {
         flameList.forEach(f -> f.render(gc));
     }
     public void handleDisapeared() {
-        if (timer.isElapsed(1000))
+        if (timer.isElapsed(750))
             flameList.removeAll(flameList);
     }
 }
