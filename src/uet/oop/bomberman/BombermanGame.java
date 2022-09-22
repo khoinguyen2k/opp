@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Board;
@@ -26,6 +27,9 @@ public class BombermanGame extends Application {
     //remove final to read value
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
+
+    public static int score = 0;
+    Timer time = new Timer();
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -191,6 +195,9 @@ public class BombermanGame extends Application {
         flameSpriteList.forEach(f ->f.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        gc.setFont(Font.font(20));
+        gc.fillText("Score:"+score,150,20);
+        gc.fillText("Time:"+time.timeElapse()/1000,Math.round(canvas.getWidth())-150,20);
     }
 
 
