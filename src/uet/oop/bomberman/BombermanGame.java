@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Board;
+import uet.oop.bomberman.graphics.FlameSprite;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.BombList;
 
@@ -35,8 +36,9 @@ public class BombermanGame extends Application {
     public static long start = System.currentTimeMillis();
     Bomber bomberman;
 
-    static Board board =new Board();
-    static BombList bombList =new BombList(board.getHeight(), board.getWidth());
+    private static Board board =new Board();
+    private static BombList bombList =new BombList(board.getHeight(), board.getWidth());
+    private static List<FlameSprite> flameSpriteList =new ArrayList<>();
     public static List<Coordination> unTravelableList = board.getUnTravelableList();
 
     public static void main(String[] args) {
@@ -179,19 +181,20 @@ public class BombermanGame extends Application {
     public void update() {
         entities.forEach(Entity::update);
         baloonMove();
-        bombList.handleExploding(bomberman);
+        bombList.handleExploding(bomberman, board, flameSpriteList);
+        flameSpriteList.forEach(f ->f.handleDisapeared());
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         board.render(gc);
         bombList.render(gc);
+        flameSpriteList.forEach(f ->f.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
 
     public void baloonMove() {
-
         for (int i=0 ; i< enemyObjects.size(); i ++) {
             int rand = (int)(Math.floor(Math.random()*4));
             long finish = System.currentTimeMillis();
