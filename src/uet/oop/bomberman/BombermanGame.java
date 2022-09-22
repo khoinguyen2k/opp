@@ -8,13 +8,16 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.FlameSprite;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.BombList;
+
 
 import java.io.IOException;
 import java.io.File;
@@ -195,9 +198,11 @@ public class BombermanGame extends Application {
         flameSpriteList.forEach(f ->f.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
-        gc.setFont(Font.font(20));
-        gc.fillText("Score:"+score,150,20);
-        gc.fillText("Time:"+time.timeElapse()/1000,Math.round(canvas.getWidth())-150,20);
+        gc.setFont(Font.font("", FontWeight.BOLD,25));
+
+        gc.setFill(Color.ORANGE);
+        gc.fillText("Score:"+score,150,25);
+        gc.fillText("Time:"+time.timeElapse()/1000,Math.round(canvas.getWidth())-150,25);
     }
 
 
