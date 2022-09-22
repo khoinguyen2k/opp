@@ -38,7 +38,8 @@ public class Balloon extends Entity {
     }
     private  Timer time = new Timer();
     void move() {
-        if (time.timeElapse() % 8000 < 2000) {
+        long elapsed = time.timeElapse() % 8000;
+        if (elapsed < 2000) {
             boolean check3 = true;
             for (Coordination i : unTravelableList) {
 
@@ -54,7 +55,7 @@ public class Balloon extends Entity {
             if (check3)
                 moveRight();
 
-        } else if (time.timeElapse() % 8000 >= 2000 && time.timeElapse() % 8000 < 4000) {
+        } else if (elapsed >= 2000 && elapsed < 4000) {
 
                 boolean check3 = true;
                 for (Coordination i : unTravelableList) {
@@ -71,7 +72,7 @@ public class Balloon extends Entity {
                 if (check3)
                     moveDown();
             }
-        else if (time.timeElapse() % 8000 >= 4000 && time.timeElapse() % 8000 < 6000) {
+        else if (elapsed >= 4000 && elapsed  < 6000) {
                 boolean check3 = true;
                 for (Coordination i : unTravelableList) {
 
@@ -87,7 +88,7 @@ public class Balloon extends Entity {
                 if (check3)
                     moveLeft();
             }
-        else if (time.timeElapse() % 8000 >= 6000 ) {
+        else if (elapsed >= 6000 ) {
 
                 boolean check3 = true;
                 for (Coordination i : unTravelableList) {
