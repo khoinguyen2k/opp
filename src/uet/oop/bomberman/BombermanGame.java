@@ -36,7 +36,7 @@ public class BombermanGame extends Application {
     public static long start = System.currentTimeMillis();
     Bomber bomberman;
 
-    private static Board board =new Board();
+    public static Board board =new Board();
     private static BombList bombList =new BombList(board.getHeight(), board.getWidth());
     private static List<FlameSprite> flameSpriteList =new ArrayList<>();
     public static List<Coordination> unTravelableList = board.getUnTravelableList();
@@ -180,7 +180,6 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
-        baloonMove();
         bombList.handleExploding(bomberman, board, flameSpriteList);
         flameSpriteList.forEach(f ->f.handleDisapeared());
     }
@@ -194,20 +193,7 @@ public class BombermanGame extends Application {
         entities.forEach(g -> g.render(gc));
     }
 
-    public void baloonMove() {
-        for (int i=0 ; i< enemyObjects.size(); i ++) {
-            int rand = (int)(Math.floor(Math.random()*4));
-            long finish = System.currentTimeMillis();
-            long timeElapsed = (finish - start) % 1000;
-            if (timeElapsed  > 500) {
-                enemyObjects.get(i).moveRight();
-            }
-            else if (timeElapsed  < 500) {
-                enemyObjects.get(i).moveLeft();
-            }
 
-        }
-    }
 
 }
 

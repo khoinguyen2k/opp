@@ -1,7 +1,7 @@
 package uet.oop.bomberman;
 
 public class Timer {
-    private long start;
+    private long start=System.currentTimeMillis();
     private long end;
     public Timer() {
         start =System.currentTimeMillis();
@@ -15,5 +15,9 @@ public class Timer {
             end =System.currentTimeMillis();
             return false;
         }
+    }
+    public long timeElapse () {
+        end = System.currentTimeMillis();
+        return end - start;
     }
 }
