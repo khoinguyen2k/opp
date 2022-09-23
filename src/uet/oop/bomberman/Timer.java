@@ -20,4 +20,8 @@ public class Timer {
         end = System.currentTimeMillis();
         return end - start;
     }
+    public void delay(long milisec) {
+        while (!isElapsed(milisec))
+            continue;
+    }
 }

@@ -112,4 +112,10 @@ public class Balloon extends Entity {
     public void update() {
         move();
     }
+    public  int getX () {
+        return this.x;
+    }
+    public  int getY () {
+        return this.y;
+    }
 }

@@ -28,6 +28,7 @@ public class BombermanGame extends Application {
     public static int HEIGHT = 15;
 
     public static int score = 0;
+    private boolean running =true;
     Timer time = new Timer();
 
     private GraphicsContext gc;
@@ -69,7 +70,6 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.setTitle("BombermanGame");
         stage.show();
-        if (bomberman !=null)
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -142,7 +142,12 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
+                if (running)
+                    render();
+                else {
+                    gc.setFont(Font.font("", FontWeight.BOLD, 50));
+                    gc.fillText("Score: " + score, Math.round(canvas.getWidth() /2), Math.round(canvas.getHeight() /2));
+                }
                 update();
             }
         };
@@ -182,8 +187,18 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        if (!entities.contains(bomberman)) running =false;
+        for (Entity entity : entities) {
+            if (entity instanceof Balloon) {
+                Balloon balon =(Balloon)entity;
+                if (checkCollision(balon.getX(), balon.getY(),
+                        bomberman.getX(), bomberman.getY()))
+                    running =false;
+            }
+        }
         bombList.handleExploding(bomberman, board, flameSpriteList);
         flameSpriteList.forEach(f ->f.handleDisapeared());
+        flameSpriteList.forEach(f ->f.collideEntity(entities));
     }
 
     public void render() {

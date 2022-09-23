@@ -19,7 +19,7 @@ public class Bomber extends Entity {
         this.y = y;
     }
     public  int getX () {
-        return  this.x;
+        return this.x;
     }
     public  int getY () {
         return this.y;

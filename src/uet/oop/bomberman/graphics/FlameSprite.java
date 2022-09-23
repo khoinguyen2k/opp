@@ -1,6 +1,7 @@
 package uet.oop.bomberman.graphics;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Timer;
 import uet.oop.bomberman.entities.*;
 
@@ -63,6 +64,23 @@ public class FlameSprite {
             flameList.removeAll(flameList);
     }
     public void collideEntity(List<Entity> entities) {
-
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i) instanceof Bomber) {
+                Bomber bomber =(Bomber)entities.get(i);
+                for (Flame flame : flameList) {
+                    if (BombermanGame.checkCollision(bomber.getX(), bomber.getY(),
+                            flame.getX(), flame.getY()))
+                        entities.remove(i);
+                }
+            }
+            if (entities.get(i) instanceof Balloon) {
+                Balloon balloon =(Balloon) entities.get(i);
+                for (Flame flame : flameList) {
+                    if (BombermanGame.checkCollision(balloon.getX(), balloon.getY(),
+                            flame.getX(), flame.getY()))
+                        entities.remove(i);
+                }
+            }
+        }
     }
 }

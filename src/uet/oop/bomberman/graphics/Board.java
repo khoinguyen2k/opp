@@ -111,11 +111,9 @@ public class Board {
         playGround[x][y] =new Grass(y, x, Sprite.grass.getFxImage());
         for (int i = 0; i < unTravelableList.size(); i++) {
             Coordination coord =unTravelableList.get(i);
-            if (coord.getX() ==Sprite.SCALED_SIZE *y &&
-                    coord.getY() ==Sprite.SCALED_SIZE *x) {
-                System.out.println(unTravelableList.toString());
+            if (coord.getX() /Sprite.SCALED_SIZE ==y &&
+                    coord.getY() /Sprite.SCALED_SIZE ==x) {
                 unTravelableList.remove(i);
-                break;
             }
         }
     }
