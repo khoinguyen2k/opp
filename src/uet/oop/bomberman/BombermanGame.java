@@ -59,7 +59,7 @@ public class BombermanGame extends Application {
         createEntities();
 
         // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH+80, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
         // Tao root container
@@ -192,17 +192,19 @@ public class BombermanGame extends Application {
     }
 
     public void render() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
         board.render(gc);
         bombList.render(gc);
         flameSpriteList.forEach(f ->f.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
-        gc.setFont(Font.font("", FontWeight.BOLD,25));
+        gc.setFont(Font.font("", FontWeight.BOLD,15));
 
-        gc.setFill(Color.ORANGE);
-        gc.fillText("Score:"+score,150,25);
-        gc.fillText("Time:"+time.timeElapse()/1000,Math.round(canvas.getWidth())-150,25);
+        gc.setFill(Color.WHEAT);
+        gc.fillText("Score: "+score,Math.round(canvas.getWidth())-65,25);
+        gc.fillText("Time: "+time.timeElapse()/1000,Math.round(canvas.getWidth())-65,60);
     }
 
 
