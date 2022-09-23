@@ -38,7 +38,7 @@ public class BombermanGame extends Application {
 
     private static List<Balloon> enemyObjects = new ArrayList<>();
     public static long start = System.currentTimeMillis();
-    Bomber bomberman;
+    private Bomber bomberman;
 
     public static Board board =new Board();
     private static BombList bombList =new BombList(board.getHeight(), board.getWidth());
@@ -148,13 +148,11 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-
     }
 
     public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
         return (Math.abs((left_a-left_b) )< Sprite.SCALED_SIZE-5 && Math.abs((top_a-top_b) )< Sprite.SCALED_SIZE-5);
     }
-
 
 
     public void createMap() {
@@ -195,16 +193,16 @@ public class BombermanGame extends Application {
         board.render(gc);
         bombList.render(gc);
         flameSpriteList.forEach(f ->f.render(gc));
+
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+
         gc.setFont(Font.font("", FontWeight.BOLD,15));
 
         gc.setFill(Color.WHEAT);
         gc.fillText("Score: "+score,Math.round(canvas.getWidth())-65,25);
         gc.fillText("Time: "+time.timeElapse()/1000,Math.round(canvas.getWidth())-65,60);
     }
-
-
 
 }
 
