@@ -37,8 +37,9 @@ public class BombermanGame extends Application {
     private static List<Entity> stillObjects = new ArrayList<>();
 
     private static List<Balloon> enemyObjects = new ArrayList<>();
+    private static List<Oneal> enemyObjects1 = new ArrayList<>();
     public static long start = System.currentTimeMillis();
-    private Bomber bomberman;
+    public static Bomber bomberman;
 
     public static List<Coordination> unTravelableList = new ArrayList<>();
     private static Board board =new Board();
@@ -187,6 +188,9 @@ public class BombermanGame extends Application {
                         enemyObjects.add(object);
                         break;
                     case '2':
+                        Oneal object4 = new Oneal(y,x,Sprite.oneal_right1.getFxImage());
+                        entities.add(object4);
+                        enemyObjects1.add(object4);
                         break;
                     default: break;
                 }
