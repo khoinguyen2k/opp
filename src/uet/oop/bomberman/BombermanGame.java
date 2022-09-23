@@ -145,14 +145,21 @@ public class BombermanGame extends Application {
                 if (running)
                     render();
                 else {
-                    gc.setFont(Font.font("", FontWeight.BOLD, 50));
-                    gc.fillText("Score: " + score, Math.round(canvas.getWidth() /2), Math.round(canvas.getHeight() /2));
+                    lose();
                 }
                 update();
             }
         };
         timer.start();
 
+    }
+    public void lose() {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFont(Font.font("", FontWeight.BOLD, 100));
+        gc.setFill(Color.WHEAT);
+        gc.fillText("YOU LOSE!", Math.round(canvas.getWidth() /2)-200, Math.round(canvas.getHeight() /2));
+        gc.fillText("Your Score:"+score, Math.round(canvas.getWidth() /2)-250, Math.round(canvas.getHeight() /2)+160);
     }
 
     public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
