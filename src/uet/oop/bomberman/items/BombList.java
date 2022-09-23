@@ -17,16 +17,18 @@ public class BombList extends Board {
     public void addBomb(int x, int y) {
         playGround[x][y] =new Bomb(y, x, Sprite.bomb.getFxImage());
     }
+    public void remove(int x, int y) {playGround[x][y] =null;}
     public void handleExploding(Bomber bomberman, Board board, List<FlameSprite> flameSpriteList) {
         for (int i =0; i <height; i++)
             for (int j =0; j <width; j++)
                 if (hasBomb(i, j)) {
                     Bomb b =(Bomb) playGround[i][j];
                     if (b.willExplode()) {
-                        flameSpriteList.add(new FlameSprite(b, board, i ,j));
-                        playGround[i][j] =null;
+                        flameSpriteList.add(new FlameSprite(board, i ,j));
+                        remove(i, j);
                         bomberman.restoreABomb();
                     }
                 }
     }
+
 }

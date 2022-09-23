@@ -205,8 +205,9 @@ public class BombermanGame extends Application {
         handleBomberCollideEnemy();
         handleBomberPickItem();
         bombList.handleExploding(bomberman, board, flameSpriteList);
-        flameSpriteList.forEach(f ->f.handleDisapeared());
+        flameSpriteList.forEach(f -> f.handleDisapeared());
         flameSpriteList.forEach(f ->f.collideEntity(entities));
+        handleChainExplosion();
         handleBomberGetInPortal();
     }
 
@@ -266,6 +267,20 @@ public class BombermanGame extends Application {
                     }
                 }
             }
+    }
+
+    private void handleChainExplosion() {
+        for (int k = 0; k < flameSpriteList.size(); k++) {
+            for (int i =0; i <bombList.getHeight(); i++)
+                for (int j =0; j <bombList.getWidth(); j++)
+                    if (bombList.hasBomb(i, j)) {
+                        Bomb b =(Bomb)bombList.getEntity(i, j);
+                        if (flameSpriteList.get(k).collideBomb(b)) {
+                            bombList.remove(i, j);
+                            flameSpriteList.add(new FlameSprite(board, i, j));
+                        }
+                    }
+        }
     }
 
     public void render() {

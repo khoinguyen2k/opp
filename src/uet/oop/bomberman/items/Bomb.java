@@ -13,7 +13,7 @@ public class Bomb extends Entity {
         timer =new Timer();
     }
 
-    public int getPower() {
+    public static int getPower() {
         return power;
     }
 
