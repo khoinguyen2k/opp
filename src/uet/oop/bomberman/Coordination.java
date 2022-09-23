@@ -26,4 +26,12 @@ public class Coordination {
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return "Coordination{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

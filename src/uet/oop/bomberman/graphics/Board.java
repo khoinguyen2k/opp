@@ -109,12 +109,11 @@ public class Board {
 
     public void breakBrick(int x, int y) {
         playGround[x][y] =new Grass(y, x, Sprite.grass.getFxImage());
-        for (int i = 0; i < unTravelableList.size(); i++) {
-            Coordination coord =unTravelableList.get(i);
+        for (int i = 0; i < BombermanGame.unTravelableList.size(); i++) {
+            Coordination coord =BombermanGame.unTravelableList.get(i);
             if (coord.getX() /Sprite.SCALED_SIZE ==y &&
                     coord.getY() /Sprite.SCALED_SIZE ==x) {
-                    System.out.println(x +" " +y);
-                unTravelableList.remove(i);
+                BombermanGame.unTravelableList.remove(i);
                 break;
             }
         }

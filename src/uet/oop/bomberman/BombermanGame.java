@@ -96,7 +96,6 @@ public class BombermanGame extends Application {
                             if (checkCollision(bomberman.getX(), bomberman.getY() + 5
                                     , i.getX(), i.getY()
                             )) {
-                                System.out.println(i.getX() +" " + i.getY());
                                 check2 = false;
                             }
 
