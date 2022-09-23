@@ -66,7 +66,7 @@ public class FlameSprite {
             flameList.removeAll(flameList);
     }
     public void collideEntity(List<Entity> entities) {
-        for (int i = 0; i < entities.size(); i++) {
+        for (int i = entities.size() - 1; i >= 0; i--) {
             if (entities.get(i) instanceof Bomber) {
                 Bomber bomber =(Bomber)entities.get(i);
                 for (Flame flame : flameList) {
