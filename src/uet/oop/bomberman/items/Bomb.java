@@ -24,6 +24,6 @@ public class Bomb extends Entity {
     public int getX() {return this.x;}
     public int getY() {return this.y;}
     public boolean willExplode() {
-        return timer.isElapsed(2000);
+        return timer.isElapsed(3000);
     }
 }
