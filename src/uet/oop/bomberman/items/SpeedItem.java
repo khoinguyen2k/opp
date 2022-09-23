@@ -2,19 +2,11 @@ package uet.oop.bomberman.items;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.Timer;
 import uet.oop.bomberman.entities.Entity;
 
-public class Bomb extends Entity {
-    private Timer timer;
-    private static int power =2;
-    public Bomb(int xUnit, int yUnit, Image img) {
+public class SpeedItem extends Entity {
+    public SpeedItem(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        timer =new Timer();
-    }
-
-    public int getPower() {
-        return power;
     }
 
     @Override
@@ -24,14 +16,7 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-
     }
     public int getX() {return this.x;}
     public int getY() {return this.y;}
-    public boolean willExplode() {
-        return timer.isElapsed(2000);
-    }
-    public static void addPower() {
-        power++;
-    }
 }

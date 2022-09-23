@@ -10,7 +10,7 @@ import uet.oop.bomberman.items.BombList;
 
 
 public class Bomber extends Entity {
-    public static final int mainCharacterSpeed = 5;
+    public static int mainCharacterSpeed = 5;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
@@ -63,5 +63,8 @@ public class Bomber extends Entity {
     }
     public void restoreABomb() {
         bombAmount++;
+    }
+    public static void addSpeed() {
+        mainCharacterSpeed +=2;
     }
 }

@@ -23,7 +23,7 @@ public class BombList extends Board {
                 if (hasBomb(i, j)) {
                     Bomb b =(Bomb) playGround[i][j];
                     if (b.willExplode()) {
-                        flameSpriteList.add(new FlameSprite(board, i ,j));
+                        flameSpriteList.add(new FlameSprite(b, board, i ,j));
                         playGround[i][j] =null;
                         bomberman.restoreABomb();
                     }

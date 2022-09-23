@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Timer;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.items.Bomb;
 
 
 import java.util.ArrayList;
@@ -11,11 +12,12 @@ import java.util.List;
 
 public class FlameSprite {
     private List<Flame> flameList =new ArrayList<>();
-    private int power =2;
+    private int power;
     private Timer timer;
     public int score_balloon = 0;
-    public FlameSprite(Board board, int x, int y) {
+    public FlameSprite(Bomb bomb, Board board, int x, int y) {
         timer =new Timer();
+        power =bomb.getPower();
         flameList.add(new Flame(y, x, Sprite.bomb_exploded.getFxImage()));
         for (int i =x -1; i >=x -power; i--) {
             if (i <0) break;
@@ -101,4 +103,5 @@ public class FlameSprite {
             }
         }
     }
+
 }

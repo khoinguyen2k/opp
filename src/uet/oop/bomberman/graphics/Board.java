@@ -3,10 +3,10 @@ package uet.oop.bomberman.graphics;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Coordination;
-import uet.oop.bomberman.entities.Brick;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.items.BombItem;
+import uet.oop.bomberman.items.FlameItem;
+import uet.oop.bomberman.items.SpeedItem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -64,8 +64,29 @@ public class Board {
                         unTravelableList.add(new Coordination(j,i));
                         break;
 
-                    case 'b':case 'f':case 's':case 'x':
+                    case 'x':
                         playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
+                        Brick brick =(Brick)playGround[i][j];
+                        brick.setItem(new Portal(j, i, Sprite.portal.getFxImage()));
+                        unTravelableList.add(new Coordination(j,i));
+                        break;
+
+                    case 'b':
+                        playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
+                        Brick brick1 =(Brick)playGround[i][j];
+                        brick1.setItem(new BombItem(j, i, Sprite.powerup_bombs.getFxImage()));
+                        unTravelableList.add(new Coordination(j,i));
+                        break;
+                    case 'f':
+                        playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
+                        Brick brick2 =(Brick)playGround[i][j];
+                        brick2.setItem(new FlameItem(j, i, Sprite.powerup_flames.getFxImage()));
+                        unTravelableList.add(new Coordination(j,i));
+                        break;
+                    case 's':
+                        playGround[i][j] =new Brick(j, i, Sprite.brick.getFxImage());
+                        Brick brick3 =(Brick)playGround[i][j];
+                        brick3.setItem(new SpeedItem(j, i, Sprite.powerup_speed.getFxImage()));
                         unTravelableList.add(new Coordination(j,i));
                         //will add in func createEntities
                         break;
@@ -108,14 +129,21 @@ public class Board {
     }
 
     public void breakBrick(int x, int y) {
-        playGround[x][y] =new Grass(y, x, Sprite.grass.getFxImage());
-        for (int i = 0; i < unTravelableList.size(); i++) {
+        Brick brick =(Brick)playGround[x][y];
+        if (brick.getItem() ==null) playGround[x][y] =new Grass(y, x, Sprite.grass.getFxImage());
+        else playGround[x][y] = brick.getItem();
+
+        for (int i = unTravelableList.size() - 1; i >= 0; i--) {
             Coordination coord =unTravelableList.get(i);
             if (coord.getX() /Sprite.SCALED_SIZE ==y &&
                     coord.getY() /Sprite.SCALED_SIZE ==x) {
                 unTravelableList.remove(i);
             }
         }
+    }
+
+    public void pickedItem(int x, int y) {
+        playGround[x][y] =new Grass(y, x, Sprite.grass.getFxImage());
     }
 
 }

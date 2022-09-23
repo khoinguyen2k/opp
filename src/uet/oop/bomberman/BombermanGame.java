@@ -16,7 +16,7 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.FlameSprite;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.items.BombList;
+import uet.oop.bomberman.items.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +38,7 @@ public class BombermanGame extends Application {
 
     private static List<Balloon> enemyObjects = new ArrayList<>();
     private static List<Oneal> enemyObjects1 = new ArrayList<>();
+    private List<Entity> items =new ArrayList<>();
     public static long start = System.currentTimeMillis();
     public static Bomber bomberman;
 
@@ -192,6 +193,8 @@ public class BombermanGame extends Application {
                         entities.add(object4);
                         enemyObjects1.add(object4);
                         break;
+                    case 'b':
+                        break;
                     default: break;
                 }
     }
@@ -199,6 +202,15 @@ public class BombermanGame extends Application {
     public void update() {
         entities.forEach(Entity::update);
         if (!entities.contains(bomberman)) running =false;
+        handleBomberCollideEnemy();
+        handleBomberPickItem();
+        bombList.handleExploding(bomberman, board, flameSpriteList);
+        flameSpriteList.forEach(f ->f.handleDisapeared());
+        flameSpriteList.forEach(f ->f.collideEntity(entities));
+        handleBomberGetInPortal();
+    }
+
+    private void handleBomberCollideEnemy() {
         for (Entity entity : entities) {
             if (entity instanceof Balloon) {
                 Balloon baloon =(Balloon)entity;
@@ -213,9 +225,47 @@ public class BombermanGame extends Application {
                     running =false;
             }
         }
-        bombList.handleExploding(bomberman, board, flameSpriteList);
-        flameSpriteList.forEach(f ->f.handleDisapeared());
-        flameSpriteList.forEach(f ->f.collideEntity(entities));
+    }
+
+    private void handleBomberGetInPortal() {
+//        if (enemyObjects.size() +enemyObjects1.size() ==0)
+        for (int i =0; i <HEIGHT; i++)
+            for (int j =0; j <WIDTH; j++)
+                if (board.getEntity(i, j) instanceof Portal) {
+                    Portal portal =(Portal)board.getEntity(i, j);
+                    if (portal.getY() ==Sprite.SCALED_SIZE *i && portal.getX() ==Sprite.SCALED_SIZE *j
+                            && checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
+                        running =false;
+                }
+    }
+
+    private void handleBomberPickItem() {
+        for (int i =0; i <HEIGHT; i++)
+            for (int j =0; j <WIDTH; j++) {
+                if (board.getEntity(i, j) instanceof BombItem) {
+                    BombItem item = (BombItem) board.getEntity(i, j);
+                    if (checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
+                        board.pickedItem(i, j);
+                        bomberman.restoreABomb();
+                    }
+                }
+
+                if (board.getEntity(i, j) instanceof FlameItem) {
+                    FlameItem item = (FlameItem) board.getEntity(i, j);
+                    if (checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
+                        board.pickedItem(i, j);
+                        Bomb.addPower();
+                    }
+                }
+
+                if (board.getEntity(i, j) instanceof SpeedItem) {
+                    SpeedItem item = (SpeedItem) board.getEntity(i, j);
+                    if (checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
+                        board.pickedItem(i, j);
+                        Bomber.addSpeed();
+                    }
+                }
+            }
     }
 
     public void render() {
