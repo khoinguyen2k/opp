@@ -39,10 +39,10 @@ public class BombermanGame extends Application {
     public static long start = System.currentTimeMillis();
     private Bomber bomberman;
 
-    public static Board board =new Board();
+    public static List<Coordination> unTravelableList = new ArrayList<>();
+    private static Board board =new Board();
     private static BombList bombList =new BombList(board.getHeight(), board.getWidth());
     private static List<FlameSprite> flameSpriteList =new ArrayList<>();
-    public static List<Coordination> unTravelableList = board.getUnTravelableList();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -69,6 +69,7 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.setTitle("BombermanGame");
         stage.show();
+        if (bomberman !=null)
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -95,6 +96,7 @@ public class BombermanGame extends Application {
                             if (checkCollision(bomberman.getX(), bomberman.getY() + 5
                                     , i.getX(), i.getY()
                             )) {
+                                System.out.println(i.getX() +" " + i.getY());
                                 check2 = false;
                             }
 
@@ -199,8 +201,8 @@ public class BombermanGame extends Application {
         gc.setFont(Font.font("", FontWeight.BOLD,15));
 
         gc.setFill(Color.WHEAT);
-        gc.fillText("Score: "+score,Math.round(canvas.getWidth())-70,25);
-        gc.fillText("Time: "+time.timeElapse()/1000,Math.round(canvas.getWidth())-70,60);
+        gc.fillText("Score: " + score, Math.round(canvas.getWidth()) - 70, 25);
+        gc.fillText("Time: " + time.timeElapse() / 1000, Math.round(canvas.getWidth()) - 70, 60);
     }
 
 }

@@ -6,12 +6,10 @@ import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.Timer;
 
-
 import java.util.List;
 
 import static uet.oop.bomberman.BombermanGame.unTravelableList;
 import uet.oop.bomberman.Coordination;
-
 
 public class Balloon extends Entity {
     public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {

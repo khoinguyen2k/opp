@@ -1,34 +1,25 @@
 package uet.oop.bomberman.graphics;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Coordination;
 import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Wall;
-import uet.oop.bomberman.items.Bomb;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import static uet.oop.bomberman.BombermanGame.unTravelableList;
 
 public class Board {
     protected Entity[][] playGround;
     protected int height;
     protected int width;
-
-    public static List<Coordination> getUnTravelableList() {
-        return unTravelableList;
-    }
-
-    public static void setUnTravelableList(List<Coordination> unTravelableList) {
-        Board.unTravelableList = unTravelableList;
-    }
-
-    public static List<Coordination> unTravelableList = new ArrayList<>();
-
+    //remove board 's own untravelabellist cause Bombermangame.untravelabellist is public
 
     public static char[][] readMap() {
         char[][] data = null;
@@ -66,7 +57,6 @@ public class Board {
                     case '#':
                         playGround[i][j] =new Wall(j, i, Sprite.wall.getFxImage());
                         unTravelableList.add(new Coordination(j,i));
-
                         break;
 
                     case '*':
@@ -115,6 +105,19 @@ public class Board {
                 if (playGround[h][w] !=null)
                     playGround[h][w].render(gc);
             }
+    }
+
+    public void breakBrick(int x, int y) {
+        playGround[x][y] =new Grass(y, x, Sprite.grass.getFxImage());
+        for (int i = 0; i < unTravelableList.size(); i++) {
+            Coordination coord =unTravelableList.get(i);
+            if (coord.getX() /Sprite.SCALED_SIZE ==y &&
+                    coord.getY() /Sprite.SCALED_SIZE ==x) {
+                    System.out.println(x +" " +y);
+                unTravelableList.remove(i);
+                break;
+            }
+        }
     }
 
 }
