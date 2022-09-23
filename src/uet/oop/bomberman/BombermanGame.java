@@ -200,8 +200,8 @@ public class BombermanGame extends Application {
         gc.setFont(Font.font("", FontWeight.BOLD,15));
 
         gc.setFill(Color.WHEAT);
-        gc.fillText("Score: "+score,Math.round(canvas.getWidth())-65,25);
-        gc.fillText("Time: "+time.timeElapse()/1000,Math.round(canvas.getWidth())-65,60);
+        gc.fillText("Score: "+score,Math.round(canvas.getWidth())-70,25);
+        gc.fillText("Time: "+time.timeElapse()/1000,Math.round(canvas.getWidth())-70,60);
     }
 
 }
