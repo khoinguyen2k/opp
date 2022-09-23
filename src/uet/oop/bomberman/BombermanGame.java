@@ -201,8 +201,14 @@ public class BombermanGame extends Application {
         if (!entities.contains(bomberman)) running =false;
         for (Entity entity : entities) {
             if (entity instanceof Balloon) {
-                Balloon balon =(Balloon)entity;
-                if (checkCollision(balon.getX(), balon.getY(),
+                Balloon baloon =(Balloon)entity;
+                if (checkCollision(baloon.getX(), baloon.getY(),
+                        bomberman.getX(), bomberman.getY()))
+                    running =false;
+            }
+            if (entity instanceof Oneal) {
+                Oneal oneal =(Oneal) entity;
+                if (checkCollision(oneal.getX(), oneal.getY(),
                         bomberman.getX(), bomberman.getY()))
                     running =false;
             }

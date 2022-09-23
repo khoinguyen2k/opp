@@ -16,7 +16,7 @@ public class Oneal extends Entity {
         super(xUnit, yUnit, img);
     }
 
-    private int speed = 2;
+    private int speed = 1;
     public  boolean checkRightisBetter () {
         return ((x - bomberman.getX()-5)*(x - bomberman.getX()-5) + (y - bomberman.getY())*(y - bomberman.getY())) < ((x - bomberman.getX()+5)*(x - bomberman.getX()+5) + (y - bomberman.getY())*(y - bomberman.getY()));
     }

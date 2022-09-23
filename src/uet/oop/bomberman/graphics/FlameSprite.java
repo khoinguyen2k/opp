@@ -87,6 +87,18 @@ public class FlameSprite {
 
                 }
             }
+            if (entities.get(i) instanceof Oneal) {
+                Oneal oneal =(Oneal) entities.get(i);
+                for (Flame flame : flameList) {
+                    if (BombermanGame.checkCollision(oneal.getX(), oneal.getY(),
+                            flame.getX(), flame.getY()))
+                    {
+                        entities.remove(i);
+                        BombermanGame.score += 200;
+                    }
+
+                }
+            }
         }
     }
 }
