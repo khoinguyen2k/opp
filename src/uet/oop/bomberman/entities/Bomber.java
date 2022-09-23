@@ -5,15 +5,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.items.Bomb;
 import uet.oop.bomberman.items.BombList;
 
-import static uet.oop.bomberman.BombermanGame.mainCharacterSpeed;
 
 public class Bomber extends Entity {
-
+    public static final int mainCharacterSpeed = 5;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }

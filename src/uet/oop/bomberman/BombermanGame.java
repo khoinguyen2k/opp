@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
-    public static final int mainCharacterSpeed = 5;
     //remove final to read value
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
