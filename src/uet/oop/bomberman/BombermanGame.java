@@ -18,12 +18,9 @@ import uet.oop.bomberman.graphics.FlameSprite;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.BombList;
 
-
 import java.io.IOException;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BombermanGame extends Application {
     public static final int mainCharacterSpeed = 5;
