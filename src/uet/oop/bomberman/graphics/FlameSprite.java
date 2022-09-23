@@ -83,6 +83,7 @@ public class FlameSprite {
                     {
                         entities.remove(i);
                         BombermanGame.score += 100;
+                        break;
                     }
 
                 }
