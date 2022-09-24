@@ -29,9 +29,6 @@ public class BombermanGame extends Application {
 
     public static int score = 0;
     private boolean running =true;
-    public static int enemyCount = 0;
-
-    private boolean win =false;
     Timer time = new Timer();
 
     private GraphicsContext gc;
@@ -147,14 +144,11 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (running && !win)
+                if (running)
                     render();
-                else if (!running && !win) {
+                else {
                     lose();
                 }
-                else  if (win) {
-                    win();
-                    }
                 update();
             }
         };
@@ -167,14 +161,6 @@ public class BombermanGame extends Application {
         gc.setFont(Font.font("", FontWeight.BOLD, 100));
         gc.setFill(Color.WHEAT);
         gc.fillText("YOU LOSE!", Math.round(canvas.getWidth() /2)-200, Math.round(canvas.getHeight() /2));
-        gc.fillText("Your Score:"+score, Math.round(canvas.getWidth() /2)-250, Math.round(canvas.getHeight() /2)+160);
-    }
-    void win() {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.setFont(Font.font("", FontWeight.BOLD, 100));
-        gc.setFill(Color.WHEAT);
-        gc.fillText("YOU WIN!", Math.round(canvas.getWidth() /2)-200, Math.round(canvas.getHeight() /2));
         gc.fillText("Your Score:"+score, Math.round(canvas.getWidth() /2)-250, Math.round(canvas.getHeight() /2)+160);
     }
 
@@ -201,13 +187,11 @@ public class BombermanGame extends Application {
                         Balloon object = new Balloon(y, x, Sprite.balloom_left1.getFxImage());
                         entities.add(object);
                         enemyObjects.add(object);
-                        enemyCount++;
                         break;
                     case '2':
                         Oneal object4 = new Oneal(y,x,Sprite.oneal_right1.getFxImage());
                         entities.add(object4);
                         enemyObjects1.add(object4);
-                        enemyCount++;
                         break;
                     case 'b':
                         break;
@@ -252,8 +236,7 @@ public class BombermanGame extends Application {
                     Portal portal =(Portal)board.getEntity(i, j);
                     if (portal.getY() ==Sprite.SCALED_SIZE *i && portal.getX() ==Sprite.SCALED_SIZE *j
                             && checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
-
-                        if (enemyCount == 0) win = true;
+                        running =false;
                 }
     }
 
