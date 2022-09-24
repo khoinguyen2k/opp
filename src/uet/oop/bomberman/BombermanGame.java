@@ -30,6 +30,9 @@ public class BombermanGame extends Application {
     public static int score = 0;
     private boolean running =true;
     Timer time = new Timer();
+    public static int enemyCount = 0;
+
+    private boolean win =false;
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -144,16 +147,27 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (running)
+                if (running && !win)
                     render();
-                else {
+                else if (!running && !win) {
                     lose();
+                }
+                else  if (win) {
+                    win();
                 }
                 update();
             }
         };
         timer.start();
 
+    }
+    void win() {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFont(Font.font("", FontWeight.BOLD, 100));
+        gc.setFill(Color.WHEAT);
+        gc.fillText("YOU WIN!", Math.round(canvas.getWidth() /2)-200, Math.round(canvas.getHeight() /2));
+        gc.fillText("Your Score:"+score, Math.round(canvas.getWidth() /2)-250, Math.round(canvas.getHeight() /2)+160);
     }
     public void lose() {
         gc.setFill(Color.BLACK);
@@ -187,11 +201,13 @@ public class BombermanGame extends Application {
                         Balloon object = new Balloon(y, x, Sprite.balloom_left1.getFxImage());
                         entities.add(object);
                         enemyObjects.add(object);
+                        enemyCount++;
                         break;
                     case '2':
                         Oneal object4 = new Oneal(y,x,Sprite.oneal_right1.getFxImage());
                         entities.add(object4);
                         enemyObjects1.add(object4);
+                        enemyCount++;
                         break;
                     case 'b':
                         break;
@@ -236,7 +252,7 @@ public class BombermanGame extends Application {
                     Portal portal =(Portal)board.getEntity(i, j);
                     if (portal.getY() ==Sprite.SCALED_SIZE *i && portal.getX() ==Sprite.SCALED_SIZE *j
                             && checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
-                        running =false;
+                        if (enemyCount == 0) win = true;
                 }
     }
 
