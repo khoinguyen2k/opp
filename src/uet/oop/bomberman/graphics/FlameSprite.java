@@ -76,6 +76,7 @@ public class FlameSprite {
                     if (BombermanGame.checkCollision(bomber.getX(), bomber.getY(),
                             flame.getX(), flame.getY()))
                         entities.remove(i);
+
                 }
             }
             if (entities.get(i) instanceof Balloon) {
@@ -86,6 +87,7 @@ public class FlameSprite {
                     {
                         entities.remove(i);
                         BombermanGame.score += 100;
+                        BombermanGame.enemyCount --;
                     }
 
                 }
@@ -98,6 +100,7 @@ public class FlameSprite {
                     {
                         entities.remove(i);
                         BombermanGame.score += 200;
+                        BombermanGame.enemyCount --;
                     }
 
                 }
