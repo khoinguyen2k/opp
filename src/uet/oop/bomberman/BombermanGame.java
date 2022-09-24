@@ -225,7 +225,6 @@ public class BombermanGame extends Application {
         flameSpriteList.forEach(f ->f.collideEntity(entities));
         handleChainExplosion();
         handleBomberGetInPortal();
-        System.out.println(enemyCount);
     }
 
     private void handleBomberCollideEnemy() {
