@@ -18,6 +18,10 @@ import uet.oop.bomberman.graphics.FlameSprite;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.*;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,10 @@ public class BombermanGame extends Application {
     public static int enemyCount = 0;
 
     private boolean win =false;
+
+    Media media = new Media(new File("res/audio/sound_bkgr_audio.wav").toURI().toString());
+
+    MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     private GraphicsContext gc;
     private Canvas canvas;
@@ -225,6 +233,7 @@ public class BombermanGame extends Application {
         flameSpriteList.forEach(f ->f.collideEntity(entities));
         handleChainExplosion();
         handleBomberGetInPortal();
+        mediaPlayer.setAutoPlay(true);
     }
 
     private void handleBomberCollideEnemy() {
