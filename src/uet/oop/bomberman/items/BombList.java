@@ -10,7 +10,6 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.File;
 import java.util.List;
 
-
 public class BombList extends Board {
 
     public BombList(int x, int y) {
@@ -35,7 +34,6 @@ public class BombList extends Board {
                         mediaPlayer1.play();
                         remove(i, j);
                         bomberman.restoreABomb();
-
                     }
                 }
     }

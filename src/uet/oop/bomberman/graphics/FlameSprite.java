@@ -68,14 +68,16 @@ public class FlameSprite {
         if (timer.isElapsed(750))
             flameList.removeAll(flameList);
     }
+
     public void collideEntity(List<Entity> entities) {
         for (int i = entities.size() - 1; i >= 0; i--) {
             if (entities.get(i) instanceof Bomber) {
                 Bomber bomber =(Bomber)entities.get(i);
                 for (Flame flame : flameList) {
                     if (BombermanGame.checkCollision(bomber.getX(), bomber.getY(),
-                            flame.getX(), flame.getY()))
-                        entities.remove(i);
+                            flame.getX(), flame.getY())) {
+                        bomber.dead();
+                    }
                 }
             }
             if (entities.get(i) instanceof Balloon) {

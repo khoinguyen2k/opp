@@ -35,11 +35,9 @@ public class BombermanGame extends Application {
     private boolean running =true;
     Timer time = new Timer();
     public static int enemyCount = 0;
-
     private boolean win =false;
 
-    Media media = new Media(new File("res/audio/background_music_game.mp3").toURI().toString());
-
+    Media media = new Media(new File("res/audio/sound_bkgr_audio.wav").toURI().toString());
     MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     private GraphicsContext gc;
@@ -155,13 +153,11 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (running && !win)
+                if (running)
                     render();
-                else if (!running && !win) {
-                    lose();
-                }
-                else  if (win) {
-                    win();
+                else {
+                    if (!win) lose();
+                    else if (win) win();
                 }
                 update();
             }
@@ -225,7 +221,8 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
-        if (!entities.contains(bomberman)) running =false;
+//        if (!entities.contains(bomberman)) running =false;
+        bomberman.update();
         handleBomberCollideEnemy();
         handleBomberPickItem();
         bombList.handleExploding(bomberman, board, flameSpriteList);
@@ -240,15 +237,13 @@ public class BombermanGame extends Application {
         for (Entity entity : entities) {
             if (entity instanceof Balloon) {
                 Balloon baloon =(Balloon)entity;
-                if (checkCollision(baloon.getX(), baloon.getY(),
-                        bomberman.getX(), bomberman.getY()))
-                    running =false;
+                if (checkCollision(baloon.getX(), baloon.getY(), bomberman.getX(), bomberman.getY()))
+                    bomberman.dead();
             }
             if (entity instanceof Oneal) {
                 Oneal oneal =(Oneal) entity;
-                if (checkCollision(oneal.getX(), oneal.getY(),
-                        bomberman.getX(), bomberman.getY()))
-                    running =false;
+                if (checkCollision(oneal.getX(), oneal.getY(), bomberman.getX(), bomberman.getY()))
+                    bomberman.dead();
             }
         }
     }
@@ -308,6 +303,7 @@ public class BombermanGame extends Application {
         }
     }
 
+    private Timer deadTimer;
     public void render() {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -317,7 +313,15 @@ public class BombermanGame extends Application {
         flameSpriteList.forEach(f ->f.render(gc));
 
         stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
+        for (Entity entity : entities)
+            if (!(entity instanceof Bomber)) entity.render(gc);
+        if (bomberman.isDead()) {
+            if (deadTimer == null) deadTimer =new Timer();
+            if (!deadTimer.isElapsed(800))
+                bomberman.handleDeadAnimation();
+            else running = false;
+        }
+        bomberman.render(gc);
 
         gc.setFont(Font.font("", FontWeight.BOLD,15));
 

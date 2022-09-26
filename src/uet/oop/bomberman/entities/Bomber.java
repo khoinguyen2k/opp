@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Timer;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.BombList;
@@ -13,15 +14,11 @@ public class Bomber extends Entity {
     private static int mainCharacterSpeed = 5;
     private Timer timer;
     private int bombAmount = 1;
+    private boolean isDead =false;
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         timer =new Timer();
-    }
-
-    public void setXY(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 
     public int getX() {
@@ -64,7 +61,6 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
-
     }
 
     public void setImg(Image im) {
@@ -81,8 +77,21 @@ public class Bomber extends Entity {
     public void restoreABomb() {
         bombAmount++;
     }
-
     public static void addSpeed() {
         mainCharacterSpeed += 2;
+    }
+    public boolean isDead() {
+        return isDead;
+    }
+    public void dead() {
+        this.isDead = true;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+    public void handleDeadAnimation() {
+        this.img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2,
+                Sprite.player_dead3, (int) timer.timeElapse(), FRAME_STEP * 6).getFxImage();
     }
 }
