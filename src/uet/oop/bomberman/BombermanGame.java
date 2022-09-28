@@ -37,7 +37,7 @@ public class BombermanGame extends Application {
     public static int enemyCount = 0;
     private boolean win =false;
 
-    Media media = new Media(new File("res/audio/sound_bkgr_audio.wav").toURI().toString());
+    Media media = new Media(new File("res/audio/background_music_game.mp3").toURI().toString());
     MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     private GraphicsContext gc;
