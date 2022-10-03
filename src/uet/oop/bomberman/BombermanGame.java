@@ -239,11 +239,14 @@ public class BombermanGame extends Application {
                 Balloon baloon =(Balloon)entity;
                 if (checkCollision(baloon.getX(), baloon.getY(), bomberman.getX(), bomberman.getY()))
                     bomberman.dead();
+
             }
             if (entity instanceof Oneal) {
                 Oneal oneal =(Oneal) entity;
                 if (checkCollision(oneal.getX(), oneal.getY(), bomberman.getX(), bomberman.getY()))
                     bomberman.dead();
+
+
             }
         }
     }
@@ -256,7 +259,11 @@ public class BombermanGame extends Application {
                     Portal portal =(Portal)board.getEntity(i, j);
                     if (portal.getY() ==Sprite.SCALED_SIZE *i && portal.getX() ==Sprite.SCALED_SIZE *j
                             && checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
-                        if (enemyCount == 0) win = true;
+                        if (enemyCount == 0) {
+                            running = false;
+                            win = true;
+                        }
+
                 }
     }
 
