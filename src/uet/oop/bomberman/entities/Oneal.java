@@ -9,11 +9,15 @@ import static uet.oop.bomberman.BombermanGame.unTravelableList;
 import static uet.oop.bomberman.BombermanGame.bomberman;
 
 public class Oneal extends Entity {
+    private Timer timer;
+    private boolean isDead = false;
+    private boolean deadAnimated = false;
     public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
         return (Math.abs((left_a-left_b) )< Sprite.SCALED_SIZE-5 && Math.abs((top_a-top_b) )< Sprite.SCALED_SIZE-5);
     }
     public Oneal(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
+        timer = new Timer();
     }
 
     private int speed = 1;
@@ -50,7 +54,6 @@ public class Oneal extends Entity {
                 if (checkCollision(this.x+5, this.y
                         , i.getX(), i.getY()
                 )) {
-
                     check3 = false;
                 }
 
@@ -67,7 +70,6 @@ public class Oneal extends Entity {
                 if (checkCollision(this.x, this.y + 5
                         , i.getX(), i.getY()
                 )) {
-
                     check3 = false;
                 }
 
@@ -84,7 +86,6 @@ public class Oneal extends Entity {
                 if (checkCollision(this.x - 5, this.y
                         , i.getX(), i.getY()
                 )) {
-
                     check3 = false;
                 }
 
@@ -102,7 +103,6 @@ public class Oneal extends Entity {
                 if (checkCollision(this.x, this.y - 5
                         , i.getX(), i.getY()
                 )) {
-
                     check3 = false;
                 }
 
@@ -115,9 +115,20 @@ public class Oneal extends Entity {
 
     }
 
+    public void dead() {
+        deadAnimated = true;
+        if (timer.timeElapse() %1000 >720)
+            isDead = true;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
     @Override
     public void update() {
-        move();
+        if (!isDead && !deadAnimated) move();
+        if (deadAnimated) img = Sprite.oneal_dead.getFxImage();
     }
     public  int getX () {
         return this.x;

@@ -80,13 +80,16 @@ public class FlameSprite {
                     }
                 }
             }
+
+            if (i <entities.size())
             if (entities.get(i) instanceof Balloon) {
                 Balloon balloon =(Balloon) entities.get(i);
                 for (Flame flame : flameList) {
                     if (BombermanGame.checkCollision(balloon.getX(), balloon.getY(),
                             flame.getX(), flame.getY()))
                     {
-                        entities.remove(i);
+                        balloon.dead();
+                        if (balloon.isDead()) entities.remove(i);
                         BombermanGame.score += 100;
                         BombermanGame.enemyCount --;
                         break;
@@ -94,13 +97,16 @@ public class FlameSprite {
 
                 }
             }
+
+            if (i <entities.size())
             if (entities.get(i) instanceof Oneal) {
                 Oneal oneal =(Oneal) entities.get(i);
                 for (Flame flame : flameList) {
                     if (BombermanGame.checkCollision(oneal.getX(), oneal.getY(),
                             flame.getX(), flame.getY()))
                     {
-                        entities.remove(i);
+                        oneal.dead();
+                        if (oneal.isDead()) entities.remove(i);
                         BombermanGame.score += 200;
                         BombermanGame.enemyCount --;
                         break;

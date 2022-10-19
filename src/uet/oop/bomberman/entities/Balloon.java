@@ -12,11 +12,15 @@ import static uet.oop.bomberman.BombermanGame.unTravelableList;
 import uet.oop.bomberman.Coordination;
 
 public class Balloon extends Entity {
+    private Timer timer;
+    private boolean isDead = false;
+    private boolean deadAnimated = false;
     public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
         return (Math.abs((left_a-left_b) )< Sprite.SCALED_SIZE-5 && Math.abs((top_a-top_b) )< Sprite.SCALED_SIZE-5);
     }
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
+        timer = new Timer();
     }
 
     public void moveRight() {
@@ -108,9 +112,20 @@ public class Balloon extends Entity {
 
     }
 
+    public void dead() {
+        deadAnimated = true;
+        if (timer.timeElapse() %1000 >720)
+            isDead = true;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
     @Override
     public void update() {
-        move();
+        if (!isDead && !deadAnimated) move();
+        if (deadAnimated) img = Sprite.balloom_dead.getFxImage();
     }
     public  int getX () {
         return this.x;

@@ -31,6 +31,7 @@ public class BombermanGame extends Application {
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
 
+    public static final int FRAME_DELAY = 200;
     public static int score = 0;
     private boolean running =true;
     Timer time = new Timer();
