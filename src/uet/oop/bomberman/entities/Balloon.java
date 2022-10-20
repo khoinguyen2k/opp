@@ -1,10 +1,12 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Coordination;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.Timer;
+
 
 import java.util.List;
 
@@ -114,12 +116,16 @@ public class Balloon extends Entity {
 
     public void dead() {
         deadAnimated = true;
+        BombermanGame.enemyCount --;
+
         if (timer.timeElapse() %1000 >720)
             isDead = true;
+
     }
 
     public boolean isDead() {
         return isDead;
+
     }
 
     @Override

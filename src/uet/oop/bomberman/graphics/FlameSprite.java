@@ -91,7 +91,7 @@ public class FlameSprite {
                         balloon.dead();
                         if (balloon.isDead()) entities.remove(i);
                         BombermanGame.score += 100;
-                        BombermanGame.enemyCount --;
+
                         break;
                     }
 
@@ -108,7 +108,7 @@ public class FlameSprite {
                         oneal.dead();
                         if (oneal.isDead()) entities.remove(i);
                         BombermanGame.score += 200;
-                        BombermanGame.enemyCount --;
+
                         break;
                     }
 

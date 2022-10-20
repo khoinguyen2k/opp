@@ -232,6 +232,7 @@ public class BombermanGame extends Application {
         handleChainExplosion();
         handleBomberGetInPortal();
         mediaPlayer.setAutoPlay(true);
+
     }
 
     private void handleBomberCollideEnemy() {
