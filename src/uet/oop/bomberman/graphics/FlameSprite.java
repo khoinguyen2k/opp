@@ -2,11 +2,11 @@ package uet.oop.bomberman.graphics;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Collision;
 import uet.oop.bomberman.Timer;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.items.Bomb;
 import uet.oop.bomberman.items.BombList;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,6 @@ public class FlameSprite {
     private List<Flame> flameList =new ArrayList<>();
     private int power;
     private Timer timer;
-    public int score_balloon = 0;
     public FlameSprite(Board board, int x, int y) {
         timer =new Timer();
         power =Bomb.getPower();
@@ -72,49 +71,46 @@ public class FlameSprite {
     public void collideEntity(List<Entity> entities) {
         for (int i = entities.size() - 1; i >= 0; i--) {
             if (entities.get(i) instanceof Bomber) {
-                Bomber bomber =(Bomber)entities.get(i);
+                Bomber bomber = (Bomber) entities.get(i);
                 for (Flame flame : flameList) {
-                    if (BombermanGame.checkCollision(bomber.getX(), bomber.getY(),
+                    if (Collision.checkCollision(bomber.getX(), bomber.getY(),
                             flame.getX(), flame.getY())) {
                         bomber.dead();
                     }
                 }
             }
+        }
 
-            if (i <entities.size())
+        for (int i = entities.size() - 1; i >= 0; i--) {
             if (entities.get(i) instanceof Balloon) {
-                Balloon balloon =(Balloon) entities.get(i);
+                Balloon balloon = (Balloon) entities.get(i);
                 for (Flame flame : flameList) {
-                    if (BombermanGame.checkCollision(balloon.getX(), balloon.getY(),
-                            flame.getX(), flame.getY()))
-                    {
+                    if (Collision.checkCollision(balloon.getX(), balloon.getY(),
+                            flame.getX(), flame.getY())) {
                         balloon.dead();
                         if (balloon.isDead()) entities.remove(i);
                         BombermanGame.score += 100;
-
-                        break;
-                    }
-
-                }
-            }
-
-            if (i <entities.size())
-            if (entities.get(i) instanceof Oneal) {
-                Oneal oneal =(Oneal) entities.get(i);
-                for (Flame flame : flameList) {
-                    if (BombermanGame.checkCollision(oneal.getX(), oneal.getY(),
-                            flame.getX(), flame.getY()))
-                    {
-                        oneal.dead();
-                        if (oneal.isDead()) entities.remove(i);
-                        BombermanGame.score += 200;
-
                         break;
                     }
 
                 }
             }
         }
+        for (int i = entities.size() - 1; i >= 0; i--) {
+            if (entities.get(i) instanceof Oneal) {
+                Oneal oneal = (Oneal) entities.get(i);
+                for (Flame flame : flameList) {
+                    if (Collision.checkCollision(oneal.getX(), oneal.getY(),
+                            flame.getX(), flame.getY())) {
+                        oneal.dead();
+                        if (oneal.isDead()) entities.remove(i);
+                        BombermanGame.score += 200;
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     public boolean collideBomb(Bomb bomb) {
