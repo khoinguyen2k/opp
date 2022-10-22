@@ -12,10 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import uet.oop.bomberman.enemy.Balloon;
-import uet.oop.bomberman.enemy.Kondoria;
-import uet.oop.bomberman.enemy.Minvo;
-import uet.oop.bomberman.enemy.Oneal;
+import uet.oop.bomberman.enemies.Balloon;
+import uet.oop.bomberman.enemies.Kondoria;
+import uet.oop.bomberman.enemies.Minvo;
+import uet.oop.bomberman.enemies.Oneal;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.FlameSprite;
@@ -70,7 +70,7 @@ public class BombermanGame extends Application {
         createEntities();
 
         // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH + 80, Sprite.SCALED_SIZE * HEIGHT);
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH +100, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
         // Tao root container
