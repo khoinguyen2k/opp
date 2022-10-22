@@ -1,8 +1,7 @@
-package uet.oop.bomberman.enemy;
+package uet.oop.bomberman.enemies;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.Coordination;
 import uet.oop.bomberman.Timer;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
