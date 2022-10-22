@@ -111,6 +111,22 @@ public class FlameSprite {
 
                 }
             }
+            if (i <entities.size())
+                if (entities.get(i) instanceof Minvo) {
+                    Minvo minvo =(Minvo) entities.get(i);
+                    for (Flame flame : flameList) {
+                        if (BombermanGame.checkCollision(minvo.getX(), minvo.getY(),
+                                flame.getX(), flame.getY()))
+                        {
+                            minvo.dead();
+                            if (minvo.isDead()) entities.remove(i);
+                            BombermanGame.score += 300;
+
+                            break;
+                        }
+
+                    }
+                }
         }
         for (int i = entities.size() - 1; i >= 0; i--) {
             if (entities.get(i) instanceof Oneal) {

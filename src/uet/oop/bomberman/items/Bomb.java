@@ -8,10 +8,11 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends Entity {
     private Timer timer;
-    private static int power =2;
+    private static int power = 2;
+
     public Bomb(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        timer =new Timer();
+        timer = new Timer();
     }
 
     public static int getPower() {
@@ -27,11 +28,19 @@ public class Bomb extends Entity {
     public void update() {
 
     }
-    public int getX() {return this.x;}
-    public int getY() {return this.y;}
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
     public boolean willExplode() {
         return timer.isElapsed(2500);
     }
+
     public static void addPower() {
         power++;
     }

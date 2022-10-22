@@ -15,9 +15,14 @@ import java.util.Scanner;
 import static uet.oop.bomberman.BombermanGame.unTravelableList;
 
 public class Board {
-    protected Entity[][] playGround;
-    protected int height;
-    protected int width;
+    protected  Entity[][] playGround;
+    protected  int height;
+    protected  int width;
+
+
+
+
+
     //remove board 's own untravelabellist cause Bombermangame.untravelabellist is public
 
     public static char[][] readMap() {
@@ -95,7 +100,7 @@ public class Board {
                         //will add in func createEntities
                         break;
 
-                    case ' ':case '1':case '2': case '3':
+                    case ' ':case '1':case '2': case '3': case '4':
                         playGround[i][j] =new Grass(j, i, Sprite.grass.getFxImage());
                         break;
 
@@ -107,23 +112,27 @@ public class Board {
 
     }
 
-    public int getWidth() {
+    public  int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public  int getHeight() {
         return height;
     }
 
-    public Entity getEntity(int x, int y) {
+    public  Entity getEntity(int x, int y) {
         return playGround[x][y];
     }
 
     public void render(GraphicsContext gc) {
         for (int h = 0; h < height; h++)
             for (int w = 0; w < width; w++) {
-                if (playGround[h][w] !=null)
+                if (playGround[h][w] !=null){
+
                     playGround[h][w].render(gc);
+                }
+
+
             }
     }
 

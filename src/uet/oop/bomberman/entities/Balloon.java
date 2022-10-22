@@ -56,7 +56,7 @@ public class Balloon extends Entity {
                 moveLeft();
 
         } else if (elapsed >= 6000) {
-            if (Collision.checkCollision(x, y -5, unTravelableList))
+            if (Collision.checkCollision(x, y - 5, unTravelableList))
                 moveUp();
 
         }

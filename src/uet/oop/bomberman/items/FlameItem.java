@@ -17,6 +17,12 @@ public class FlameItem extends Entity {
     @Override
     public void update() {
     }
-    public int getX() {return this.x;}
-    public int getY() {return this.y;}
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 }

@@ -16,8 +16,9 @@ public class BombList extends Board {
     public BombList(int x, int y) {
         playGround =new Bomb[x][y];
     }
+
     public boolean hasBomb(int x, int y) {
-        return playGround[x][y] !=null;
+        return playGround[x][y] != null;
     }
     public void addBomb(int x, int y) {
         playGround[x][y] =new Bomb(y, x, Sprite.bomb.getFxImage());

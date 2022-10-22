@@ -54,8 +54,8 @@ public class BombermanGame extends Application {
     public static Bomber bomberman;
 
     public static List<Coordination> unTravelableList = new ArrayList<>();
-    private static Board board = new Board();
-    private static BombList bombList = new BombList(board.getHeight(), board.getWidth());
+    public static Board board = new Board();
+    public static BombList bombList = new BombList(board.getHeight(), board.getWidth());
     private static List<FlameSprite> flameSpriteList = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -220,6 +220,11 @@ public class BombermanGame extends Application {
                     case '3':
                         Kondoria object5 = new Kondoria(y, x, Sprite.kondoria_right1.getFxImage());
                         entities.add(object5);
+                        enemyCount++;
+                        break;
+                    case '4':
+                        Minvo object6 = new Minvo(y, x, Sprite.minvo_right1.getFxImage());
+                        entities.add(object6);
                         enemyCount++;
                         break;
                     case 'b':
