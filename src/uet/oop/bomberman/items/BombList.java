@@ -12,6 +12,7 @@ import java.util.List;
 
 public class BombList extends Board {
 
+
     public BombList(int x, int y) {
         playGround =new Bomb[x][y];
     }

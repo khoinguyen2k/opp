@@ -114,6 +114,22 @@ public class FlameSprite {
 
                 }
             }
+            if (i <entities.size())
+            if (entities.get(i) instanceof Kondoria) {
+                Kondoria kondoria =(Kondoria) entities.get(i);
+                for (Flame flame : flameList) {
+                    if (BombermanGame.checkCollision(kondoria.getX(), kondoria.getY(),
+                            flame.getX(), flame.getY()))
+                    {
+                        kondoria.dead();
+                        if (kondoria.isDead()) entities.remove(i);
+                        BombermanGame.score += 300;
+
+                        break;
+                    }
+
+                }
+            }
         }
     }
 

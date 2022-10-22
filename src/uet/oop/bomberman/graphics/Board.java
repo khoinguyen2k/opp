@@ -96,7 +96,7 @@ public class Board {
                         //will add in func createEntities
                         break;
 
-                    case ' ':case '1':case '2':
+                    case ' ':case '1':case '2': case '3':
                         playGround[i][j] =new Grass(j, i, Sprite.grass.getFxImage());
                         break;
 

@@ -21,6 +21,7 @@ import uet.oop.bomberman.items.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,10 +34,10 @@ public class BombermanGame extends Application {
 
     public static final int FRAME_DELAY = 200;
     public static int score = 0;
-    private boolean running =true;
+    private boolean running = true;
     Timer time = new Timer();
     public static int enemyCount = 0;
-    private boolean win =false;
+    private boolean win = false;
 
     Media media = new Media(new File("res/audio/background_music_game.mp3").toURI().toString());
     MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -48,14 +49,14 @@ public class BombermanGame extends Application {
 
     private static List<Balloon> enemyObjects = new ArrayList<>();
     private static List<Oneal> enemyObjects1 = new ArrayList<>();
-    private List<Entity> items =new ArrayList<>();
+    private List<Entity> items = new ArrayList<>();
     public static long start = System.currentTimeMillis();
     public static Bomber bomberman;
 
     public static List<Coordination> unTravelableList = new ArrayList<>();
-    private static Board board =new Board();
-    private static BombList bombList =new BombList(board.getHeight(), board.getWidth());
-    private static List<FlameSprite> flameSpriteList =new ArrayList<>();
+    private static Board board = new Board();
+    private static BombList bombList = new BombList(board.getHeight(), board.getWidth());
+    private static List<FlameSprite> flameSpriteList = new ArrayList<>();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -68,7 +69,7 @@ public class BombermanGame extends Application {
         createEntities();
 
         // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH+80, Sprite.SCALED_SIZE * HEIGHT);
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH + 80, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
         // Tao root container
@@ -90,7 +91,7 @@ public class BombermanGame extends Application {
                         boolean check3 = true;
                         for (Coordination i : unTravelableList) {
 
-                            if (checkCollision(bomberman.getX()+5, bomberman.getY()
+                            if (checkCollision(bomberman.getX() + 5, bomberman.getY()
                                     , i.getX(), i.getY()
                             )) {
 
@@ -118,7 +119,7 @@ public class BombermanGame extends Application {
                     case LEFT:
                         boolean check1 = true;
                         for (Coordination i : unTravelableList) {
-                            if (checkCollision(bomberman.getX()-5, bomberman.getY()
+                            if (checkCollision(bomberman.getX() - 5, bomberman.getY()
                                     , i.getX(), i.getY()
                             )) {
                                 check1 = false;
@@ -143,8 +144,8 @@ public class BombermanGame extends Application {
                         break;
 
                     case Z:
-                        int bombX =(bomberman.getY() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
-                        int bombY =(bomberman.getX() +Sprite.SCALED_SIZE /2) /Sprite.SCALED_SIZE;
+                        int bombX = (bomberman.getY() + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+                        int bombY = (bomberman.getX() + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
                         bomberman.placeBomb(bombList, bombX, bombY);
                         break;
                 }
@@ -166,40 +167,42 @@ public class BombermanGame extends Application {
         timer.start();
 
     }
+
     void win() {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFont(Font.font("", FontWeight.BOLD, 100));
         gc.setFill(Color.WHEAT);
-        gc.fillText("YOU WIN!", Math.round(canvas.getWidth() /2)-200, Math.round(canvas.getHeight() /2));
-        gc.fillText("Your Score:"+score, Math.round(canvas.getWidth() /2)-250, Math.round(canvas.getHeight() /2)+160);
+        gc.fillText("YOU WIN!", Math.round(canvas.getWidth() / 2) - 200, Math.round(canvas.getHeight() / 2));
+        gc.fillText("Your Score:" + score, Math.round(canvas.getWidth() / 2) - 250, Math.round(canvas.getHeight() / 2) + 160);
     }
+
     public void lose() {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFont(Font.font("", FontWeight.BOLD, 100));
         gc.setFill(Color.WHEAT);
-        gc.fillText("YOU LOSE!", Math.round(canvas.getWidth() /2)-200, Math.round(canvas.getHeight() /2));
-        gc.fillText("Your Score:"+score, Math.round(canvas.getWidth() /2)-250, Math.round(canvas.getHeight() /2)+160);
+        gc.fillText("YOU LOSE!", Math.round(canvas.getWidth() / 2) - 200, Math.round(canvas.getHeight() / 2));
+        gc.fillText("Your Score:" + score, Math.round(canvas.getWidth() / 2) - 250, Math.round(canvas.getHeight() / 2) + 160);
     }
 
-    public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
-        return (Math.abs((left_a-left_b) )< Sprite.SCALED_SIZE-5 && Math.abs((top_a-top_b) )< Sprite.SCALED_SIZE-5);
+    public static boolean checkCollision(int left_a, int top_a, int left_b, int top_b) {
+        return (Math.abs((left_a - left_b)) < Sprite.SCALED_SIZE - 5 && Math.abs((top_a - top_b)) < Sprite.SCALED_SIZE - 5);
     }
 
 
     public void createMap() {
-        HEIGHT =board.getHeight();
-        WIDTH =board.getWidth();
+        HEIGHT = board.getHeight();
+        WIDTH = board.getWidth();
     }
 
     public void createEntities() {
-        char[][] data =Board.readMap();
-        for (int x =0; x <data.length; x++) //numRow
-            for (int y =0; y <data[0].length; y++) //numCol
+        char[][] data = Board.readMap();
+        for (int x = 0; x < data.length; x++) //numRow
+            for (int y = 0; y < data[0].length; y++) //numCol
                 switch (data[x][y]) {
                     case 'p':
-                        bomberman =new Bomber(y, x, Sprite.player_right.getFxImage());
+                        bomberman = new Bomber(y, x, Sprite.player_right.getFxImage());
                         entities.add(bomberman);
                         break;
                     case '1':
@@ -209,14 +212,20 @@ public class BombermanGame extends Application {
                         enemyCount++;
                         break;
                     case '2':
-                        Oneal object4 = new Oneal(y,x,Sprite.oneal_right1.getFxImage());
+                        Oneal object4 = new Oneal(y, x, Sprite.oneal_right1.getFxImage());
                         entities.add(object4);
                         enemyObjects1.add(object4);
                         enemyCount++;
                         break;
+                    case '3':
+                        Kondoria object5 = new Kondoria(y, x, Sprite.kondoria_right1.getFxImage());
+                        entities.add(object5);
+                        enemyCount++;
+                        break;
                     case 'b':
                         break;
-                    default: break;
+                    default:
+                        break;
                 }
     }
 
@@ -228,7 +237,7 @@ public class BombermanGame extends Application {
         handleBomberPickItem();
         bombList.handleExploding(bomberman, board, flameSpriteList);
         flameSpriteList.forEach(f -> f.handleDisapeared());
-        flameSpriteList.forEach(f ->f.collideEntity(entities));
+        flameSpriteList.forEach(f -> f.collideEntity(entities));
         handleChainExplosion();
         handleBomberGetInPortal();
         mediaPlayer.setAutoPlay(true);
@@ -238,14 +247,21 @@ public class BombermanGame extends Application {
     private void handleBomberCollideEnemy() {
         for (Entity entity : entities) {
             if (entity instanceof Balloon) {
-                Balloon baloon =(Balloon)entity;
+                Balloon baloon = (Balloon) entity;
                 if (checkCollision(baloon.getX(), baloon.getY(), bomberman.getX(), bomberman.getY()))
                     bomberman.dead();
 
             }
             if (entity instanceof Oneal) {
-                Oneal oneal =(Oneal) entity;
+                Oneal oneal = (Oneal) entity;
                 if (checkCollision(oneal.getX(), oneal.getY(), bomberman.getX(), bomberman.getY()))
+                    bomberman.dead();
+
+
+            }
+            if (entity instanceof Kondoria) {
+                Kondoria kondoria = (Kondoria) entity;
+                if (checkCollision(kondoria.getX(), kondoria.getY(), bomberman.getX(), bomberman.getY()))
                     bomberman.dead();
 
 
@@ -255,11 +271,11 @@ public class BombermanGame extends Application {
 
     private void handleBomberGetInPortal() {
 //        if (enemyObjects.size() +enemyObjects1.size() ==0)
-        for (int i =0; i <HEIGHT; i++)
-            for (int j =0; j <WIDTH; j++)
+        for (int i = 0; i < HEIGHT; i++)
+            for (int j = 0; j < WIDTH; j++)
                 if (board.getEntity(i, j) instanceof Portal) {
-                    Portal portal =(Portal)board.getEntity(i, j);
-                    if (portal.getY() ==Sprite.SCALED_SIZE *i && portal.getX() ==Sprite.SCALED_SIZE *j
+                    Portal portal = (Portal) board.getEntity(i, j);
+                    if (portal.getY() == Sprite.SCALED_SIZE * i && portal.getX() == Sprite.SCALED_SIZE * j
                             && checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
                         if (enemyCount == 0) {
                             running = false;
@@ -270,8 +286,8 @@ public class BombermanGame extends Application {
     }
 
     private void handleBomberPickItem() {
-        for (int i =0; i <HEIGHT; i++)
-            for (int j =0; j <WIDTH; j++) {
+        for (int i = 0; i < HEIGHT; i++)
+            for (int j = 0; j < WIDTH; j++) {
                 if (board.getEntity(i, j) instanceof BombItem) {
                     BombItem item = (BombItem) board.getEntity(i, j);
                     if (checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
@@ -300,10 +316,10 @@ public class BombermanGame extends Application {
 
     private void handleChainExplosion() {
         for (int k = 0; k < flameSpriteList.size(); k++) {
-            for (int i =0; i <bombList.getHeight(); i++)
-                for (int j =0; j <bombList.getWidth(); j++)
+            for (int i = 0; i < bombList.getHeight(); i++)
+                for (int j = 0; j < bombList.getWidth(); j++)
                     if (bombList.hasBomb(i, j)) {
-                        Bomb b =(Bomb)bombList.getEntity(i, j);
+                        Bomb b = (Bomb) bombList.getEntity(i, j);
                         if (flameSpriteList.get(k).collideBomb(b)) {
                             bombList.remove(i, j);
                             flameSpriteList.add(new FlameSprite(board, i, j));
@@ -313,26 +329,27 @@ public class BombermanGame extends Application {
     }
 
     private Timer deadTimer;
+
     public void render() {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         board.render(gc);
         bombList.render(gc);
-        flameSpriteList.forEach(f ->f.render(gc));
+        flameSpriteList.forEach(f -> f.render(gc));
 
         stillObjects.forEach(g -> g.render(gc));
         for (Entity entity : entities)
             if (!(entity instanceof Bomber)) entity.render(gc);
         if (bomberman.isDead()) {
-            if (deadTimer == null) deadTimer =new Timer();
+            if (deadTimer == null) deadTimer = new Timer();
             if (!deadTimer.isElapsed(800))
                 bomberman.handleDeadAnimation();
             else running = false;
         }
         bomberman.render(gc);
 
-        gc.setFont(Font.font("", FontWeight.BOLD,15));
+        gc.setFont(Font.font("", FontWeight.BOLD, 15));
 
         gc.setFill(Color.WHEAT);
         gc.fillText("Score: " + score, Math.round(canvas.getWidth()) - 70, 25);
