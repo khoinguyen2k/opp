@@ -1,131 +1,79 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.Coordination;
+import uet.oop.bomberman.*;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.Timer;
-
-
-import java.util.List;
 
 import static uet.oop.bomberman.BombermanGame.unTravelableList;
-import uet.oop.bomberman.Coordination;
 
 public class Balloon extends Entity {
     private Timer timer;
     private boolean isDead = false;
     private boolean deadAnimated = false;
-    public static boolean checkCollision(int left_a,int top_a,int left_b,int top_b) {
-        return (Math.abs((left_a-left_b) )< Sprite.SCALED_SIZE-5 && Math.abs((top_a-top_b) )< Sprite.SCALED_SIZE-5);
-    }
+
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         timer = new Timer();
     }
 
+    private int speed = 1;
+
     public void moveRight() {
-        this.x +=1;
-        this.img= Sprite.balloom_right1.getFxImage();
+        this.x += speed;
+        this.img = Sprite.balloom_right1.getFxImage();
     }
+
     public void moveLeft() {
-        this.x -=1;
-        this.img= Sprite.balloom_left1.getFxImage();
+        this.x -= speed;
+        this.img = Sprite.balloom_left1.getFxImage();
     }
+
     public void moveDown() {
-        this.y +=1;
+        this.y += speed;
         this.img = Sprite.balloom_right3.getFxImage();
     }
+
     public void moveUp() {
-        this.y -=1;
+        this.y -= speed;
         this.img = Sprite.balloom_left3.getFxImage();
     }
-    private  Timer time = new Timer();
+
+    private Timer time = new Timer();
+
     void move() {
         long elapsed = time.timeElapse() % 8000;
         if (elapsed < 2000) {
-            boolean check3 = true;
-            for (Coordination i : unTravelableList) {
-
-                if (checkCollision(this.x+5, this.y
-                        , i.getX(), i.getY()
-                )) {
-
-                    check3 = false;
-                }
-
-            }
-
-            if (check3)
+            if (Collision.checkCollision(x + 5, y, unTravelableList))
                 moveRight();
 
         } else if (elapsed >= 2000 && elapsed < 4000) {
+            if (Collision.checkCollision(x, y + 5, unTravelableList))
+                moveDown();
 
-                boolean check3 = true;
-                for (Coordination i : unTravelableList) {
+        } else if (elapsed >= 4000 && elapsed < 6000) {
+            if (Collision.checkCollision(x - 5, y, unTravelableList))
+                moveLeft();
 
-                    if (checkCollision(this.x, this.y + 5
-                            , i.getX(), i.getY()
-                    )) {
+        } else if (elapsed >= 6000) {
+            if (Collision.checkCollision(x, y -5, unTravelableList))
+                moveUp();
 
-                        check3 = false;
-                    }
-
-                }
-
-                if (check3)
-                    moveDown();
-            }
-        else if (elapsed >= 4000 && elapsed  < 6000) {
-                boolean check3 = true;
-                for (Coordination i : unTravelableList) {
-
-                    if (checkCollision(this.x - 5, this.y
-                            , i.getX(), i.getY()
-                    )) {
-
-                        check3 = false;
-                    }
-
-                }
-
-                if (check3)
-                    moveLeft();
-            }
-        else if (elapsed >= 6000 ) {
-
-                boolean check3 = true;
-                for (Coordination i : unTravelableList) {
-
-                    if (checkCollision(this.x, this.y - 5
-                            , i.getX(), i.getY()
-                    )) {
-
-                        check3 = false;
-                    }
-
-                }
-
-                if (check3)
-                    moveUp();
-            }
-
+        }
 
     }
 
     public void dead() {
         deadAnimated = true;
-        BombermanGame.enemyCount --;
+        BombermanGame.enemyCount--;
 
-        if (timer.timeElapse() %1000 >720)
+        if (timer.timeElapse() % 1000 > 900)
             isDead = true;
 
     }
 
     public boolean isDead() {
         return isDead;
-
     }
 
     @Override
@@ -133,10 +81,12 @@ public class Balloon extends Entity {
         if (!isDead && !deadAnimated) move();
         if (deadAnimated) img = Sprite.balloom_dead.getFxImage();
     }
-    public  int getX () {
+
+    public int getX() {
         return this.x;
     }
-    public  int getY () {
+
+    public int getY() {
         return this.y;
     }
 }

@@ -10,9 +10,8 @@ import uet.oop.bomberman.items.SpeedItem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
+
 import static uet.oop.bomberman.BombermanGame.unTravelableList;
 
 public class Board {
