@@ -12,6 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import uet.oop.bomberman.enemy.Balloon;
+import uet.oop.bomberman.enemy.Kondoria;
+import uet.oop.bomberman.enemy.Minvo;
+import uet.oop.bomberman.enemy.Oneal;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.FlameSprite;
@@ -20,7 +24,6 @@ import uet.oop.bomberman.items.*;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 
 import java.io.File;
 import java.io.IOException;
