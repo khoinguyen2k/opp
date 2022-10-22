@@ -24,7 +24,7 @@ public class Board {
     public static char[][] readMap() {
         char[][] data = null;
         try {
-            Scanner scanner = new Scanner(new File("res/levels/testLvl.txt"));
+            Scanner scanner = new Scanner(new File("res/levels/Level1.txt"));
             int _level = scanner.nextInt(); //not use but have to read.
             int _height = scanner.nextInt();
             int _width = scanner.nextInt();

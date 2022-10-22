@@ -4,10 +4,10 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Collision;
 import uet.oop.bomberman.Timer;
-import uet.oop.bomberman.enemy.Balloon;
-import uet.oop.bomberman.enemy.Kondoria;
-import uet.oop.bomberman.enemy.Minvo;
-import uet.oop.bomberman.enemy.Oneal;
+import uet.oop.bomberman.enemies.Balloon;
+import uet.oop.bomberman.enemies.Kondoria;
+import uet.oop.bomberman.enemies.Minvo;
+import uet.oop.bomberman.enemies.Oneal;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.items.Bomb;
 
