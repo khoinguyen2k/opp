@@ -47,8 +47,6 @@ public class BombermanGame extends Application {
     private static List<Entity> entities = new ArrayList<>();
     private static List<Entity> stillObjects = new ArrayList<>();
 
-    private static List<Balloon> enemyObjects = new ArrayList<>();
-    private static List<Oneal> enemyObjects1 = new ArrayList<>();
     private List<Entity> items = new ArrayList<>();
     public static long start = System.currentTimeMillis();
     public static Bomber bomberman;
@@ -86,61 +84,27 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
+                if (!bomberman.isDead())
                 switch (event.getCode()) {
                     case RIGHT:
-                        boolean check3 = true;
-                        for (Coordination i : unTravelableList) {
-
-                            if (checkCollision(bomberman.getX() + 5, bomberman.getY()
-                                    , i.getX(), i.getY()
-                            )) {
-
-                                check3 = false;
-                            }
-
-                        }
-
-                        if (check3)
+                        if (Collision.checkCollision(bomberman.getX() +5, bomberman.getY()
+                                , unTravelableList))
                             bomberman.moveRight();
                         break;
                     case DOWN:
-                        boolean check2 = true;
-                        for (Coordination i : unTravelableList) {
-                            if (checkCollision(bomberman.getX(), bomberman.getY() + 5
-                                    , i.getX(), i.getY()
-                            )) {
-                                check2 = false;
-                            }
-
-                        }
-
-                        if (check2) bomberman.moveDown();
+                        if (Collision.checkCollision(bomberman.getX(), bomberman.getY() +5
+                                , unTravelableList))
+                            bomberman.moveDown();
                         break;
                     case LEFT:
-                        boolean check1 = true;
-                        for (Coordination i : unTravelableList) {
-                            if (checkCollision(bomberman.getX() - 5, bomberman.getY()
-                                    , i.getX(), i.getY()
-                            )) {
-                                check1 = false;
-                            }
-
-                        }
-
-                        if (check1) bomberman.moveLeft();
+                        if (Collision.checkCollision(bomberman.getX() -5, bomberman.getY()
+                                , unTravelableList))
+                            bomberman.moveLeft();
                         break;
                     case UP:
-                        boolean check = true;
-                        for (Coordination i : unTravelableList) {
-                            if (checkCollision(bomberman.getX(), bomberman.getY() - 5
-                                    , i.getX(), i.getY()
-                            )) {
-                                check = false;
-                            }
-
-                        }
-
-                        if (check) bomberman.moveUp();
+                        if (Collision.checkCollision(bomberman.getX(), bomberman.getY() -5
+                                , unTravelableList))
+                            bomberman.moveUp();
                         break;
 
                     case Z:
@@ -158,8 +122,7 @@ public class BombermanGame extends Application {
                 if (running)
                     render();
                 else {
-                    if (!win) lose();
-                    else if (win) win();
+                    renderEndLevel();
                 }
                 update();
             }
@@ -168,28 +131,15 @@ public class BombermanGame extends Application {
 
     }
 
-    void win() {
+    private void renderEndLevel() {
+        String result =win? "YOU WIN!": "YOU LOSE!";
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFont(Font.font("", FontWeight.BOLD, 100));
         gc.setFill(Color.WHEAT);
-        gc.fillText("YOU WIN!", Math.round(canvas.getWidth() / 2) - 200, Math.round(canvas.getHeight() / 2));
-        gc.fillText("Your Score:" + score, Math.round(canvas.getWidth() / 2) - 250, Math.round(canvas.getHeight() / 2) + 160);
+        gc.fillText(result, Math.round(canvas.getWidth() / 2) - 200, Math.round(canvas.getHeight() / 2));
+        gc.fillText("Your Score: " +score, Math.round(canvas.getWidth() / 2) - 300, Math.round(canvas.getHeight() / 2) + 140);
     }
-
-    public void lose() {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.setFont(Font.font("", FontWeight.BOLD, 100));
-        gc.setFill(Color.WHEAT);
-        gc.fillText("YOU LOSE!", Math.round(canvas.getWidth() / 2) - 200, Math.round(canvas.getHeight() / 2));
-        gc.fillText("Your Score:" + score, Math.round(canvas.getWidth() / 2) - 250, Math.round(canvas.getHeight() / 2) + 160);
-    }
-
-    public static boolean checkCollision(int left_a, int top_a, int left_b, int top_b) {
-        return (Math.abs((left_a - left_b)) < Sprite.SCALED_SIZE - 5 && Math.abs((top_a - top_b)) < Sprite.SCALED_SIZE - 5);
-    }
-
 
     public void createMap() {
         HEIGHT = board.getHeight();
@@ -208,13 +158,11 @@ public class BombermanGame extends Application {
                     case '1':
                         Balloon object = new Balloon(y, x, Sprite.balloom_left1.getFxImage());
                         entities.add(object);
-                        enemyObjects.add(object);
                         enemyCount++;
                         break;
                     case '2':
                         Oneal object4 = new Oneal(y, x, Sprite.oneal_right1.getFxImage());
                         entities.add(object4);
-                        enemyObjects1.add(object4);
                         enemyCount++;
                         break;
                     case '3':
@@ -251,25 +199,11 @@ public class BombermanGame extends Application {
 
     private void handleBomberCollideEnemy() {
         for (Entity entity : entities) {
-            if (entity instanceof Balloon) {
-                Balloon baloon = (Balloon) entity;
-                if (checkCollision(baloon.getX(), baloon.getY(), bomberman.getX(), bomberman.getY()))
+            if (entity instanceof Balloon ||entity instanceof Oneal
+                    ||entity instanceof Kondoria ||entity instanceof Minvo) {
+
+                if (Collision.checkCollision(entity.getX(), entity.getY(), bomberman.getX(), bomberman.getY()))
                     bomberman.dead();
-
-            }
-            if (entity instanceof Oneal) {
-                Oneal oneal = (Oneal) entity;
-                if (checkCollision(oneal.getX(), oneal.getY(), bomberman.getX(), bomberman.getY()))
-                    bomberman.dead();
-
-
-            }
-            if (entity instanceof Kondoria) {
-                Kondoria kondoria = (Kondoria) entity;
-                if (checkCollision(kondoria.getX(), kondoria.getY(), bomberman.getX(), bomberman.getY()))
-                    bomberman.dead();
-
-
             }
         }
     }
@@ -281,7 +215,7 @@ public class BombermanGame extends Application {
                 if (board.getEntity(i, j) instanceof Portal) {
                     Portal portal = (Portal) board.getEntity(i, j);
                     if (portal.getY() == Sprite.SCALED_SIZE * i && portal.getX() == Sprite.SCALED_SIZE * j
-                            && checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
+                            && Collision.checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
                         if (enemyCount == 0) {
                             running = false;
                             win = true;
@@ -295,7 +229,7 @@ public class BombermanGame extends Application {
             for (int j = 0; j < WIDTH; j++) {
                 if (board.getEntity(i, j) instanceof BombItem) {
                     BombItem item = (BombItem) board.getEntity(i, j);
-                    if (checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
+                    if (Collision.checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
                         board.pickedItem(i, j);
                         bomberman.restoreABomb();
                     }
@@ -303,7 +237,7 @@ public class BombermanGame extends Application {
 
                 if (board.getEntity(i, j) instanceof FlameItem) {
                     FlameItem item = (FlameItem) board.getEntity(i, j);
-                    if (checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
+                    if (Collision.checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
                         board.pickedItem(i, j);
                         Bomb.addPower();
                     }
@@ -311,7 +245,7 @@ public class BombermanGame extends Application {
 
                 if (board.getEntity(i, j) instanceof SpeedItem) {
                     SpeedItem item = (SpeedItem) board.getEntity(i, j);
-                    if (checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
+                    if (Collision.checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
                         board.pickedItem(i, j);
                         Bomber.addSpeed();
                     }

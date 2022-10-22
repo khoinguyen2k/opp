@@ -77,12 +77,12 @@ public class Oneal extends Entity {
     public void dead() {
         deadAnimated = true;
         BombermanGame.enemyCount--;
-        if (timer.timeElapse() % 1000 > 900)
+        if (timer.timeElapse() % 1000 > 740)
             isDead = true;
     }
 
     public boolean isDead() {
-        return isDead;
+        return isDead ||(deadAnimated &&timer.timeElapse() % 1000 > 740);
     }
 
     @Override

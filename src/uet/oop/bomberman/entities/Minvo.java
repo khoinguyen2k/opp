@@ -107,7 +107,7 @@ public class Minvo extends Entity {
     public void dead() {
         deadAnimated = true;
         BombermanGame.enemyCount--;
-        if (timer.timeElapse() % 1000 > 900)
+        if (timer.timeElapse() % 1000 > 749)
             isDead = true;
     }
 
@@ -120,14 +120,5 @@ public class Minvo extends Entity {
         if (!isDead && !deadAnimated) move();
         if (deadAnimated) img = Sprite.minvo_dead.getFxImage();
     }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
 
 }

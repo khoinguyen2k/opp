@@ -19,16 +19,12 @@ public class Board {
     protected  int height;
     protected  int width;
 
-
-
-
-
     //remove board 's own untravelabellist cause Bombermangame.untravelabellist is public
 
     public static char[][] readMap() {
         char[][] data = null;
         try {
-            Scanner scanner = new Scanner(new File("res/levels/Level1.txt"));
+            Scanner scanner = new Scanner(new File("res/levels/testLvl.txt"));
             int _level = scanner.nextInt(); //not use but have to read.
             int _height = scanner.nextInt();
             int _width = scanner.nextInt();
