@@ -105,6 +105,7 @@ public class FlameSprite {
                 if (balloon.isDead()) {
                     entities.remove(i);
                     BombermanGame.score += 100;
+                    BombermanGame.enemyCount--;
                 }
             }
         }
@@ -127,6 +128,7 @@ public class FlameSprite {
                 if (kondoria.isDead()) {
                     entities.remove(i);
                     BombermanGame.score += 300;
+                    BombermanGame.enemyCount--;
                 }
             }
         }
@@ -151,6 +153,7 @@ public class FlameSprite {
                 if (minvo.isDead()) {
                     entities.remove(i);
                     BombermanGame.score += 300;
+                    BombermanGame.enemyCount--;
                 }
             }
         }
@@ -173,6 +176,7 @@ public class FlameSprite {
                 if (oneal.isDead()) {
                     entities.remove(i);
                     BombermanGame.score += 200;
+                    BombermanGame.enemyCount--;
                 }
             }
         }

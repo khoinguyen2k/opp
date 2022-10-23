@@ -105,7 +105,6 @@ public class Minvo extends Entity {
 
     public void dead() {
         deadAnimated = true;
-        BombermanGame.enemyCount--;
         if (timer.timeElapse() % 1000 > 749)
             isDead = true;
     }

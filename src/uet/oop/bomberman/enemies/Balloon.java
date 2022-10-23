@@ -65,7 +65,7 @@ public class Balloon extends Entity {
 
     public void dead() {
         deadAnimated = true;
-        BombermanGame.enemyCount--;
+
         if (timer.timeElapse() % 1000 > 740)
             isDead = true;
     }
