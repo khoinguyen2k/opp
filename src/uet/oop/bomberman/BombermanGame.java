@@ -198,6 +198,7 @@ public class BombermanGame extends Application {
         handleBomberGetInPortal();
         mediaPlayer.setAutoPlay(true);
 
+
     }
 
     private void handleBomberCollideEnemy() {
