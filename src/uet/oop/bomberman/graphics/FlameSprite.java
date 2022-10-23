@@ -143,7 +143,6 @@ public class FlameSprite {
                         minvo.dead();
                         if (minvo.isDead()) entities.remove(i);
                         BombermanGame.score += 300;
-                        BombermanGame.enemyCount--;
                     }
                 }
             }
