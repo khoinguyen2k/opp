@@ -1,31 +1,28 @@
 package uet.oop.bomberman.enemies;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Timer;
-import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
-import static uet.oop.bomberman.BombermanGame.bomberman;
-
-public class Kondoria extends Entity {
-
-    private Timer timer;
-    private boolean isDead = false;
-    private boolean deadAnimated = false;
+public class Kondoria extends Enemy {
+    //data for calculate
+    private Bomber bomberman;
 
     public Kondoria(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         timer = new Timer();
     }
 
-    private int speed = 1;
+    public void setEnemyData(Bomber bomber) {
+        bomberman = bomber;
+    }
 
-    public boolean checkRightisBetter() {
+    public boolean checkRightIsBetter() {
         return ((x - bomberman.getX() - 5) * (x - bomberman.getX() - 5) + (y - bomberman.getY()) * (y - bomberman.getY())) < ((x - bomberman.getX() + 5) * (x - bomberman.getX() + 5) + (y - bomberman.getY()) * (y - bomberman.getY()));
     }
 
-    public boolean checkUpisBetter() {
+    public boolean checkUpIsBetter() {
         return ((y - bomberman.getY() - 5) * (y - bomberman.getY() - 5) + (x - bomberman.getX()) * (x - bomberman.getX())) < ((y - bomberman.getY() + 5) * (y - bomberman.getY() + 5) + (x - bomberman.getX()) * (x - bomberman.getX()));
     }
 
@@ -54,42 +51,22 @@ public class Kondoria extends Entity {
     void move() {
         long elapsed = time.timeElapse() % 1000;
         if (elapsed < 250) {
-
-
-            if (!checkRightisBetter())
+            if (!checkRightIsBetter())
                 moveRight();
 
         } else if (elapsed >= 250 && elapsed < 500) {
-
-
-            if (!checkUpisBetter())
-
+            if (!checkUpIsBetter())
                 moveDown();
+
         } else if (elapsed >= 500 && elapsed < 750) {
-
-
-            if (checkRightisBetter())
-
+            if (checkRightIsBetter())
                 moveLeft();
+
         } else if (elapsed >= 750) {
-
-
-            if (checkUpisBetter())
+            if (checkUpIsBetter())
                 moveUp();
         }
 
-
-    }
-
-    public void dead() {
-        deadAnimated = true;
-
-        if (timer.timeElapse() % 1000 > 749)
-            isDead = true;
-    }
-
-    public boolean isDead() {
-        return isDead;
     }
 
     @Override
@@ -97,14 +74,5 @@ public class Kondoria extends Entity {
         if (!isDead && !deadAnimated) move();
         if (deadAnimated) img = Sprite.kondoria_dead.getFxImage();
     }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
 
 }

@@ -9,24 +9,24 @@ import uet.oop.bomberman.enemies.Kondoria;
 import uet.oop.bomberman.enemies.Minvo;
 import uet.oop.bomberman.enemies.Oneal;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.items.Bomb;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlameSprite {
+public class FlameChain {
     private List<Flame> flameList = new ArrayList<>();
     private int power;
     private Timer timer;
 
-    public FlameSprite(Board board, int x, int y) {
+    public FlameChain(ObstacleLayer board, int x, int y) {
         timer = new Timer();
         power = Bomb.getPower();
         flameList.add(new Flame(y, x, Sprite.bomb_exploded.getFxImage()));
+
         for (int i = x - 1; i >= x - power; i--) {
             if (i < 0) break;
-            if (board.getEntity(i, y) instanceof Wall) break;
-            if (board.getEntity(i, y) instanceof Brick) {
+            if (board.getEntityAt(i, y) instanceof Wall) break;
+            if (board.getEntityAt(i, y) instanceof Brick) {
                 board.breakBrick(i, y);
                 flameList.add(new Flame(y, i, Sprite.explosion_vertical.getFxImage()));
                 break;
@@ -35,8 +35,8 @@ public class FlameSprite {
         }
         for (int i = x + 1; i <= x + power; i++) {
             if (i >= board.getHeight()) break;
-            if (board.getEntity(i, y) instanceof Wall) break;
-            if (board.getEntity(i, y) instanceof Brick) {
+            if (board.getEntityAt(i, y) instanceof Wall) break;
+            if (board.getEntityAt(i, y) instanceof Brick) {
                 board.breakBrick(i, y);
                 flameList.add(new Flame(y, i, Sprite.explosion_vertical.getFxImage()));
                 break;
@@ -45,8 +45,8 @@ public class FlameSprite {
         }
         for (int j = y - 1; j >= y - power; j--) {
             if (j < 0) break;
-            if (board.getEntity(x, j) instanceof Wall) break;
-            if (board.getEntity(x, j) instanceof Brick) {
+            if (board.getEntityAt(x, j) instanceof Wall) break;
+            if (board.getEntityAt(x, j) instanceof Brick) {
                 board.breakBrick(x, j);
                 flameList.add(new Flame(j, x, Sprite.explosion_horizontal.getFxImage()));
                 break;
@@ -55,8 +55,8 @@ public class FlameSprite {
         }
         for (int j = y + 1; j <= y + power; j++) {
             if (j >= board.getWidth()) break;
-            if (board.getEntity(x, j) instanceof Wall) break;
-            if (board.getEntity(x, j) instanceof Brick) {
+            if (board.getEntityAt(x, j) instanceof Wall) break;
+            if (board.getEntityAt(x, j) instanceof Brick) {
                 board.breakBrick(x, j);
                 flameList.add(new Flame(j, x, Sprite.explosion_horizontal.getFxImage()));
                 break;
@@ -74,7 +74,7 @@ public class FlameSprite {
             flameList.removeAll(flameList);
     }
 
-    public void collideEntity(List<Entity> entities) {
+    public void collideEntity(List<Entity> entities, BombermanGame game) {
         for (int i = entities.size() - 1; i >= 0; i--) {
             if (entities.get(i) instanceof Bomber) {
                 Bomber bomber = (Bomber) entities.get(i);
@@ -104,8 +104,8 @@ public class FlameSprite {
                 Balloon balloon = (Balloon) entities.get(i);
                 if (balloon.isDead()) {
                     entities.remove(i);
-                    BombermanGame.score += 100;
-                    BombermanGame.enemyCount--;
+                    game.addScore(100);
+                    game.removeEnemy();
                 }
             }
         }
@@ -127,8 +127,8 @@ public class FlameSprite {
                 Kondoria kondoria = (Kondoria) entities.get(i);
                 if (kondoria.isDead()) {
                     entities.remove(i);
-                    BombermanGame.score += 300;
-                    BombermanGame.enemyCount--;
+                    game.addScore(300);
+                    game.removeEnemy();
                 }
             }
         }
@@ -141,8 +141,6 @@ public class FlameSprite {
                             flame.getX(), flame.getY())) {
 
                         minvo.dead();
-                        if (minvo.isDead()) entities.remove(i);
-                        BombermanGame.score += 300;
                     }
                 }
             }
@@ -152,8 +150,8 @@ public class FlameSprite {
                 Minvo minvo = (Minvo) entities.get(i);
                 if (minvo.isDead()) {
                     entities.remove(i);
-                    BombermanGame.score += 300;
-                    BombermanGame.enemyCount--;
+                    game.addScore(300);
+                    game.removeEnemy();
                 }
             }
         }
@@ -175,8 +173,8 @@ public class FlameSprite {
                 Oneal oneal = (Oneal) entities.get(i);
                 if (oneal.isDead()) {
                     entities.remove(i);
-                    BombermanGame.score += 200;
-                    BombermanGame.enemyCount--;
+                    game.addScore(200);
+                    game.removeEnemy();
                 }
             }
         }

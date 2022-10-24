@@ -17,10 +17,7 @@ import uet.oop.bomberman.enemies.Kondoria;
 import uet.oop.bomberman.enemies.Minvo;
 import uet.oop.bomberman.enemies.Oneal;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.graphics.Board;
-import uet.oop.bomberman.graphics.FlameSprite;
-import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.items.*;
+import uet.oop.bomberman.graphics.*;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -35,29 +32,28 @@ public class BombermanGame extends Application {
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
 
-    public static final int FRAME_DELAY = 200;
-    public static int score = 0;
+    public static final int FRAME_STEP = 80;
+    private int score = 0;
     private boolean running = true;
-    Timer time = new Timer();
-    public static int enemyCount = 0;
+    private Timer time = new Timer();
+    private int enemyCount = 0;
     private boolean win = false;
 
-    Media media = new Media(new File("res/audio/background_music_game.mp3").toURI().toString());
-    MediaPlayer mediaPlayer = new MediaPlayer(media);
+    private Media media = new Media(new File("res/audio/background_music_game.mp3").toURI().toString());
+    private MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private static List<Entity> entities = new ArrayList<>();
-    private static List<Entity> stillObjects = new ArrayList<>();
+    private List<Entity> entities = new ArrayList<>();
+    private Bomber bomberman;
 
-    private List<Entity> items = new ArrayList<>();
-    public static long start = System.currentTimeMillis();
-    public static Bomber bomberman;
+    private String path ="res/levels/Level1.txt";
+    private DataMap dataMap;
 
-    public static List<Coordination> unTravelableList = new ArrayList<>();
-    public static Board board = new Board();
-    public static BombList bombList = new BombList(board.getHeight(), board.getWidth());
-    private static List<FlameSprite> flameSpriteList = new ArrayList<>();
+    private Board board;
+    private ObstacleLayer obstacleLayer;
+    private BombLayer bombLayer;
+    private FlameLayer flameLayer;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -87,35 +83,7 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (!bomberman.isDead())
-                switch (event.getCode()) {
-                    case RIGHT:
-                        if (Collision.checkCollision(bomberman.getX() +5, bomberman.getY()
-                                , unTravelableList))
-                            bomberman.moveRight();
-                        break;
-                    case DOWN:
-                        if (Collision.checkCollision(bomberman.getX(), bomberman.getY() +5
-                                , unTravelableList))
-                            bomberman.moveDown();
-                        break;
-                    case LEFT:
-                        if (Collision.checkCollision(bomberman.getX() -5, bomberman.getY()
-                                , unTravelableList))
-                            bomberman.moveLeft();
-                        break;
-                    case UP:
-                        if (Collision.checkCollision(bomberman.getX(), bomberman.getY() -5
-                                , unTravelableList))
-                            bomberman.moveUp();
-                        break;
-
-                    case Z:
-                        int bombX = (bomberman.getY() + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
-                        int bombY = (bomberman.getX() + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
-                        bomberman.placeBomb(bombList, bombX, bombY);
-                        break;
-                }
+                bomberman.handlePress(event, bombLayer);
             }
         });
 
@@ -145,130 +113,70 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() {
-        HEIGHT = board.getHeight();
-        WIDTH = board.getWidth();
+        dataMap = new DataMap(path);
+        HEIGHT = dataMap.getHeight();
+        WIDTH = dataMap.getWidth();
+        board =new Board(dataMap);
+        obstacleLayer = new ObstacleLayer(dataMap);
+        bombLayer =new BombLayer(dataMap);
+        flameLayer =new FlameLayer(dataMap);
     }
 
     public void createEntities() {
-        char[][] data = Board.readMap();
-        for (int x = 0; x < data.length; x++) //numRow
-            for (int y = 0; y < data[0].length; y++) //numCol
-                switch (data[x][y]) {
+        for (int x = 0; x < dataMap.getHeight(); x++) //numRow
+            for (int y = 0; y < dataMap.getWidth(); y++) //numCol
+            {
+                char val = dataMap.getAt(x, y);
+                switch (val) {
                     case 'p':
                         bomberman = new Bomber(y, x, Sprite.player_right.getFxImage());
+                        bomberman.setObstacle(obstacleLayer);
                         entities.add(bomberman);
                         break;
                     case '1':
-                        Balloon object = new Balloon(y, x, Sprite.balloom_left1.getFxImage());
-                        entities.add(object);
+                        Balloon balloon = new Balloon(y, x, Sprite.balloom_left1.getFxImage());
+                        balloon.setEnemyData(obstacleLayer);
+                        entities.add(balloon);
                         enemyCount++;
                         break;
                     case '2':
-                        Oneal object4 = new Oneal(y, x, Sprite.oneal_right1.getFxImage());
-                        entities.add(object4);
+                        Oneal oneal = new Oneal(y, x, Sprite.oneal_right1.getFxImage());
+                        oneal.setEnemyData(bomberman, obstacleLayer);
+                        entities.add(oneal);
                         enemyCount++;
                         break;
                     case '3':
-                        Kondoria object5 = new Kondoria(y, x, Sprite.kondoria_right1.getFxImage());
-                        entities.add(object5);
+                        Kondoria kondoria = new Kondoria(y, x, Sprite.kondoria_right1.getFxImage());
+                        kondoria.setEnemyData(bomberman);
+                        entities.add(kondoria);
                         enemyCount++;
                         break;
                     case '4':
-                        Minvo object6 = new Minvo(y, x, Sprite.minvo_right1.getFxImage());
-                        entities.add(object6);
+                        Minvo minvo = new Minvo(y, x, Sprite.minvo_right1.getFxImage());
+                        minvo.setEnemyData(bomberman, bombLayer, obstacleLayer, board);
+                        entities.add(minvo);
                         enemyCount++;
                         break;
-                    case 'b':
-                        break;
+
                     default:
                         break;
                 }
+            }
     }
 
     public void update() {
         entities.forEach(Entity::update);
 //        if (!entities.contains(bomberman)) running =false;
         bomberman.update();
-        handleBomberCollideEnemy();
-        handleBomberPickItem();
-        bombList.handleExploding(bomberman, board, flameSpriteList);
-        flameSpriteList.forEach(f -> f.handleDisapeared());
-        flameSpriteList.forEach(f -> f.collideEntity(entities));
-        handleChainExplosion();
-        handleBomberGetInPortal();
+        bomberman.collideEnemies(entities);
+        bomberman.pickItem(obstacleLayer);
+        bombLayer.handleExploding(bomberman, obstacleLayer, flameLayer);
+        flameLayer.handleDisapeared();
+        flameLayer.collideEntity(entities, this);
+        flameLayer.handleChainExplosion(bombLayer, obstacleLayer);
+        bomberman.handleGetInPortal(obstacleLayer, this);
         mediaPlayer.setAutoPlay(true);
 
-
-    }
-
-    private void handleBomberCollideEnemy() {
-        for (Entity entity : entities) {
-            if (entity instanceof Balloon ||entity instanceof Oneal
-                    ||entity instanceof Kondoria ||entity instanceof Minvo) {
-
-                if (Collision.checkCollision(entity.getX(), entity.getY(), bomberman.getX(), bomberman.getY()))
-                    bomberman.dead();
-            }
-        }
-    }
-
-    private void handleBomberGetInPortal() {
-//        if (enemyObjects.size() +enemyObjects1.size() ==0)
-        for (int i = 0; i < HEIGHT; i++)
-            for (int j = 0; j < WIDTH; j++)
-                if (board.getEntity(i, j) instanceof Portal) {
-                    Portal portal = (Portal) board.getEntity(i, j);
-                    if (portal.getY() == Sprite.SCALED_SIZE * i && portal.getX() == Sprite.SCALED_SIZE * j
-                            && Collision.checkCollision(bomberman.getX(), bomberman.getY(), portal.getX(), portal.getY()))
-                        if (enemyCount == 0) {
-                            running = false;
-                            win = true;
-                        }
-
-                }
-    }
-
-    private void handleBomberPickItem() {
-        for (int i = 0; i < HEIGHT; i++)
-            for (int j = 0; j < WIDTH; j++) {
-                if (board.getEntity(i, j) instanceof BombItem) {
-                    BombItem item = (BombItem) board.getEntity(i, j);
-                    if (Collision.checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
-                        board.pickedItem(i, j);
-                        bomberman.restoreABomb();
-                    }
-                }
-
-                if (board.getEntity(i, j) instanceof FlameItem) {
-                    FlameItem item = (FlameItem) board.getEntity(i, j);
-                    if (Collision.checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
-                        board.pickedItem(i, j);
-                        Bomb.addPower();
-                    }
-                }
-
-                if (board.getEntity(i, j) instanceof SpeedItem) {
-                    SpeedItem item = (SpeedItem) board.getEntity(i, j);
-                    if (Collision.checkCollision(bomberman.getX(), bomberman.getY(), item.getX(), item.getY())) {
-                        board.pickedItem(i, j);
-                        Bomber.addSpeed();
-                    }
-                }
-            }
-    }
-
-    private void handleChainExplosion() {
-        for (int k = 0; k < flameSpriteList.size(); k++) {
-            for (int i = 0; i < bombList.getHeight(); i++)
-                for (int j = 0; j < bombList.getWidth(); j++)
-                    if (bombList.hasBomb(i, j)) {
-                        Bomb b = (Bomb) bombList.getEntity(i, j);
-                        if (flameSpriteList.get(k).collideBomb(b)) {
-                            bombList.remove(i, j);
-                            flameSpriteList.add(new FlameSprite(board, i, j));
-                        }
-                    }
-        }
     }
 
     private Timer deadTimer;
@@ -278,25 +186,44 @@ public class BombermanGame extends Application {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         board.render(gc);
-        bombList.render(gc);
-        flameSpriteList.forEach(f -> f.render(gc));
+        obstacleLayer.render(gc);
+        bombLayer.render(gc);
+        flameLayer.render(gc);
 
-        stillObjects.forEach(g -> g.render(gc));
-        for (Entity entity : entities)
-            if (!(entity instanceof Bomber)) entity.render(gc);
+        entities.forEach(entity -> entity.render(gc));
         if (bomberman.isDead()) {
             if (deadTimer == null) deadTimer = new Timer();
             if (!deadTimer.isElapsed(800))
                 bomberman.handleDeadAnimation();
             else running = false;
         }
-        bomberman.render(gc);
 
         gc.setFont(Font.font("", FontWeight.BOLD, 15));
 
         gc.setFill(Color.WHEAT);
-        gc.fillText("Score: " + score, Math.round(canvas.getWidth()) - 70, 25);
-        gc.fillText("Time: " + time.timeElapse() / 1000, Math.round(canvas.getWidth()) - 70, 60);
+        gc.fillText("Score: " + score, Math.round(canvas.getWidth()) - 90, 25);
+        gc.fillText("Time: " + time.timeElapse() / 1000, Math.round(canvas.getWidth()) - 90, 60);
+    }
+
+    //refactor things.
+    public void removeEnemy() {
+        enemyCount--;
+    }
+
+    public void addScore(int amount) {
+        score += amount;
+    }
+
+    public int getEnemyCount() {
+        return enemyCount;
+    }
+
+    public void stop() {
+        running = false;
+    }
+
+    public void setWin() {
+        win = true;
     }
 
 }

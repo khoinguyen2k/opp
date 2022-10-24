@@ -1,32 +1,32 @@
 package uet.oop.bomberman.enemies;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Collision;
 import uet.oop.bomberman.Timer;
-import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.graphics.ObstacleLayer;
 import uet.oop.bomberman.graphics.Sprite;
 
-import static uet.oop.bomberman.BombermanGame.unTravelableList;
-import static uet.oop.bomberman.BombermanGame.bomberman;
-
-public class Oneal extends Entity {
-    private Timer timer;
-    private boolean isDead = false;
-    private boolean deadAnimated = false;
+public class Oneal extends Enemy {
+    //data for calculate
+    private Bomber bomberman;
+    private ObstacleLayer obstacleLayer;
 
     public Oneal(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         timer = new Timer();
     }
 
-    private int speed = 1;
+    public void setEnemyData(Bomber bomber, ObstacleLayer obstacleLayer) {
+        bomberman = bomber;
+        this.obstacleLayer = obstacleLayer;
+    }
 
-    private boolean checkRightisBetter() {
+    private boolean checkRightIsBetter() {
         return ((x - bomberman.getX() - 5) * (x - bomberman.getX() - 5) + (y - bomberman.getY()) * (y - bomberman.getY())) < ((x - bomberman.getX() + 5) * (x - bomberman.getX() + 5) + (y - bomberman.getY()) * (y - bomberman.getY()));
     }
 
-    private boolean checkUpisBetter() {
+    private boolean checkUpIsBetter() {
         return ((y - bomberman.getY() - 5) * (y - bomberman.getY() - 5) + (x - bomberman.getX()) * (x - bomberman.getX())) < ((y - bomberman.getY() + 5) * (y - bomberman.getY() + 5) + (x - bomberman.getX()) * (x - bomberman.getX()));
     }
 
@@ -55,34 +55,23 @@ public class Oneal extends Entity {
     void move() {
         long elapsed = time.timeElapse() % 1000;
         if (elapsed < 250) {
-            if (Collision.checkCollision(x + 5, y, unTravelableList) && !checkRightisBetter())
+            if (Collision.checkCollision(x + 5, y, obstacleLayer.getUnTravelableList()) && !checkRightIsBetter())
                 moveRight();
 
         } else if (elapsed >= 250 && elapsed < 500) {
-            if (Collision.checkCollision(x, y + 5, unTravelableList) && !checkUpisBetter())
+            if (Collision.checkCollision(x, y + 5, obstacleLayer.getUnTravelableList()) && !checkUpIsBetter())
                 moveDown();
 
         } else if (elapsed >= 500 && elapsed < 750) {
-            if (Collision.checkCollision(x - 5, y, unTravelableList) && checkRightisBetter())
+            if (Collision.checkCollision(x - 5, y, obstacleLayer.getUnTravelableList()) && checkRightIsBetter())
                 moveLeft();
 
         } else if (elapsed >= 750) {
-            if (Collision.checkCollision(x, y - 5, unTravelableList) && checkUpisBetter())
+            if (Collision.checkCollision(x, y - 5, obstacleLayer.getUnTravelableList()) && checkUpIsBetter())
                 moveUp();
 
         }
 
-
-    }
-
-    public void dead() {
-        deadAnimated = true;
-        if (timer.timeElapse() % 1000 > 740)
-            isDead = true;
-    }
-
-    public boolean isDead() {
-        return isDead ||(deadAnimated &&timer.timeElapse() % 1000 > 740);
     }
 
     @Override
@@ -91,11 +80,4 @@ public class Oneal extends Entity {
         if (deadAnimated) img = Sprite.oneal_dead.getFxImage();
     }
 
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
 }

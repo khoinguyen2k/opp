@@ -1,14 +1,19 @@
-package uet.oop.bomberman.items;
+package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.Timer;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.File;
+
 public class Bomb extends Entity {
     private Timer timer;
     private static int power = 2;
+    private MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File("res/audio/Explosion.wav").toURI().toString()));
 
     public Bomb(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -43,5 +48,9 @@ public class Bomb extends Entity {
 
     public static void addPower() {
         power++;
+    }
+    
+    public void playSound() {
+        mediaPlayer.play();
     }
 }

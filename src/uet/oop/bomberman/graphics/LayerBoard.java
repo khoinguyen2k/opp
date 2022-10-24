@@ -3,40 +3,15 @@ package uet.oop.bomberman.graphics;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.Entity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 public abstract class LayerBoard {
     protected Entity[][] entityBoard;
     protected int height;
     protected int width;
 
-    public LayerBoard() {
-    }
-
-    public static char[][] readMap(String path) {
-        char[][] data = null;
-        try {
-            Scanner scanner = new Scanner(new File(path));
-            int _level = scanner.nextInt(); //not use but have to read.
-            int _height = scanner.nextInt();
-            int _width = scanner.nextInt();
-            scanner.nextLine(); //fix scanner bug
-
-            data = new char[_height][_width];
-            for (int i = 0; i < _height; i++) {
-                String line = scanner.nextLine();
-                for (int j = 0; j < _width; j++) {
-                    data[i][j] = line.charAt(j);
-                }
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return data;
-
+    public LayerBoard(DataMap map) {
+        height = map.getHeight();
+        width = map.getWidth();
+        entityBoard = new Entity[height][width];
     }
 
     public int getHeight() {
@@ -47,7 +22,7 @@ public abstract class LayerBoard {
         return width;
     }
 
-    public Entity getEntity(int x, int y) {
+    public Entity getEntityAt(int x, int y) {
         return entityBoard[x][y];
     }
 

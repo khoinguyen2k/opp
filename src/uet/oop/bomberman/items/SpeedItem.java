@@ -18,11 +18,4 @@ public class SpeedItem extends Entity {
     public void update() {
     }
 
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
 }
