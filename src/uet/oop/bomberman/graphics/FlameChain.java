@@ -21,52 +21,56 @@ public class FlameChain {
     public FlameChain(ObstacleLayer board, int x, int y) {
         timer = new Timer();
         power = Bomb.getPower();
-        flameList.add(new Flame(y, x, Sprite.bomb_exploded.getFxImage()));
+        flameList.add(new Flame(y, x, FlameType.CENTER));
 
         for (int i = x - 1; i >= x - power; i--) {
             if (i < 0) break;
             if (board.getEntityAt(i, y) instanceof Wall) break;
             if (board.getEntityAt(i, y) instanceof Brick) {
                 board.breakBrick(i, y);
-                flameList.add(new Flame(y, i, Sprite.explosion_vertical.getFxImage()));
+                flameList.add(new Flame(y, i, FlameType.VERTICAL));
                 break;
             }
-            flameList.add(new Flame(y, i, Sprite.explosion_vertical.getFxImage()));
+            flameList.add(new Flame(y, i, FlameType.VERTICAL));
         }
         for (int i = x + 1; i <= x + power; i++) {
             if (i >= board.getHeight()) break;
             if (board.getEntityAt(i, y) instanceof Wall) break;
             if (board.getEntityAt(i, y) instanceof Brick) {
                 board.breakBrick(i, y);
-                flameList.add(new Flame(y, i, Sprite.explosion_vertical.getFxImage()));
+                flameList.add(new Flame(y, i, FlameType.VERTICAL));
                 break;
             }
-            flameList.add(new Flame(y, i, Sprite.explosion_vertical.getFxImage()));
+            flameList.add(new Flame(y, i, FlameType.VERTICAL));
         }
         for (int j = y - 1; j >= y - power; j--) {
             if (j < 0) break;
             if (board.getEntityAt(x, j) instanceof Wall) break;
             if (board.getEntityAt(x, j) instanceof Brick) {
                 board.breakBrick(x, j);
-                flameList.add(new Flame(j, x, Sprite.explosion_horizontal.getFxImage()));
+                flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
                 break;
             }
-            flameList.add(new Flame(j, x, Sprite.explosion_horizontal.getFxImage()));
+            flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
         }
         for (int j = y + 1; j <= y + power; j++) {
             if (j >= board.getWidth()) break;
             if (board.getEntityAt(x, j) instanceof Wall) break;
             if (board.getEntityAt(x, j) instanceof Brick) {
                 board.breakBrick(x, j);
-                flameList.add(new Flame(j, x, Sprite.explosion_horizontal.getFxImage()));
+                flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
                 break;
             }
-            flameList.add(new Flame(j, x, Sprite.explosion_horizontal.getFxImage()));
+            flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
         }
     }
 
     public void render(GraphicsContext gc) {
         flameList.forEach(f -> f.render(gc));
+    }
+
+    public void update() {
+        flameList.forEach(Flame::update);
     }
 
     public void handleDisapeared() {

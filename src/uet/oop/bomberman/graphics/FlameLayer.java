@@ -21,6 +21,10 @@ public class FlameLayer extends LayerBoard {
         flameChainList.forEach(flameChain -> flameChain.render(gc));
     }
 
+    public void update() {
+        flameChainList.forEach(FlameChain::update);
+    }
+
     public void addFlameChain(FlameChain flameChain) {
         flameChainList.add(flameChain);
     }
