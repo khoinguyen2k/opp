@@ -18,7 +18,7 @@ public class Button {
         this.text = text;
         this.x = 0;
         this.y = 0;
-        this.width = size * text.length();
+        this.width = (size-30) * text.length();
         this.height = size;
         this.color = color;
     }
