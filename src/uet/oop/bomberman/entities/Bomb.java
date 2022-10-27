@@ -4,6 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.misc.Timer;
 
 import java.io.File;
@@ -29,15 +31,8 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
+        img = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2,
+                (int) timer.timeElapse(), BombermanGame.FRAME_STEP * 6).getFxImage();
     }
 
     public boolean willExplode() {
@@ -47,7 +42,7 @@ public class Bomb extends Entity {
     public static void addPower() {
         power++;
     }
-    
+
     public void playSound() {
         mediaPlayer.play();
     }

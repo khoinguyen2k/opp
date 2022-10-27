@@ -35,4 +35,11 @@ public class BombLayer extends LayerBoard {
                 }
     }
 
+    public void update() {
+        for (int h = 0; h < height; h++)
+            for (int w = 0; w < width; w++)
+                if (hasBomb(h, w))
+                    entityBoard[h][w].update();
+    }
+
 }

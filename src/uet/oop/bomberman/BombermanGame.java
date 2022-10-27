@@ -196,6 +196,8 @@ public class BombermanGame extends Application {
         if (gameStatus == GameStatus.RUNNING) {
             entities.forEach(Entity::update);
             bomberman.update();
+            bombLayer.update();
+
             bomberman.collideEnemies(entities);
             bomberman.pickItem(obstacleLayer);
             bombLayer.handleExploding(bomberman, obstacleLayer, flameLayer);
