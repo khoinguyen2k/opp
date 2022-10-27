@@ -24,9 +24,12 @@ public class Bomber extends Entity {
     //data for movement.
     private ObstacleLayer obstacleLayer;
 
+    private int numberOfLife ;
+
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
         timer = new Timer();
+        numberOfLife = 3;
     }
 
     public void setObstacle(ObstacleLayer obstacleLayer) {
@@ -132,7 +135,20 @@ public class Bomber extends Entity {
     }
 
     public void dead() {
-        this.isDead = true;
+
+        if (numberOfLife == 1) {
+            this.isDead = true;
+        }
+        this.setX(Sprite.SCALED_SIZE);
+        this.setY(Sprite.SCALED_SIZE);
+        numberOfLife --;
+        this.img = Sprite.player_right.getFxImage();
+
+
+    }
+
+    public int getNumberOfLife() {
+        return numberOfLife;
     }
 
     public void collideEnemies(List<Entity> entities) {

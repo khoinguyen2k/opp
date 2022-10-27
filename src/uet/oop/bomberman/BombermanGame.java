@@ -245,6 +245,7 @@ public class BombermanGame extends Application {
         gc.setFill(Color.WHEAT);
         gc.fillText("Score: " + score, Math.round(canvas.getWidth()) - 90, 25);
         gc.fillText("Time: " + time.timeElapse() / 1000, Math.round(canvas.getWidth()) - 90, 60);
+        gc.fillText("Life: " + bomberman.getNumberOfLife(), Math.round(canvas.getWidth()) - 90, 90);
     }
 
     //refactor things.
