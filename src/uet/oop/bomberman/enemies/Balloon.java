@@ -12,7 +12,6 @@ public class Balloon extends Enemy {
 
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        timer = new Timer();
     }
 
     public void setEnemyData(ObstacleLayer obstacleLayer) {

@@ -14,7 +14,6 @@ public class Oneal extends Enemy {
 
     public Oneal(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        timer = new Timer();
     }
 
     public void setEnemyData(Bomber bomber, ObstacleLayer obstacleLayer) {

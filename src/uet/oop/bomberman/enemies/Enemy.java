@@ -9,18 +9,19 @@ public abstract class Enemy extends Entity {
         super(xUnit, yUnit, img);
     }
 
-    protected Timer timer;
+    protected Timer timer = null;
     protected boolean isDead = false;
     protected boolean deadAnimated = false;
     protected int speed = 1;
 
     public void dead() {
+        if (timer == null) timer = new Timer();
         deadAnimated = true;
-        if (timer.timeElapse() % 1000 > 740)
+        if (timer.isElapsed(750))
             isDead = true;
     }
 
     public boolean isDead() {
-        return isDead || (deadAnimated && timer.timeElapse() % 1000 > 740);
+        return isDead || (deadAnimated && timer.timeElapse() > 740);
     }
 }

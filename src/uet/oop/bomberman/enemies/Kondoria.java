@@ -11,7 +11,6 @@ public class Kondoria extends Enemy {
 
     public Kondoria(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        timer = new Timer();
     }
 
     public void setEnemyData(Bomber bomber) {

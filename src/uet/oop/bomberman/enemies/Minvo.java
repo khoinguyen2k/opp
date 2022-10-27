@@ -18,7 +18,6 @@ public class Minvo extends Enemy {
 
     public Minvo(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        timer = new Timer();
     }
 
     public void setEnemyData(Bomber bomber, BombLayer bombLayer, ObstacleLayer obstacleLayer, Board board) {
