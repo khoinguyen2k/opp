@@ -29,10 +29,12 @@ public class Bomb extends Entity {
         super.render(gc);
     }
 
+    private int FRAME_STEP =BombermanGame.FRAME_STEP *2;
+
     @Override
     public void update() {
         img = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2,
-                (int) timer.timeElapse(), BombermanGame.FRAME_STEP * 6).getFxImage();
+                (int) timer.timeElapse(), FRAME_STEP * 3).getFxImage();
     }
 
     public boolean willExplode() {

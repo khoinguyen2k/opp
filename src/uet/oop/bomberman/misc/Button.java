@@ -3,9 +3,6 @@ package uet.oop.bomberman.misc;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-/**
- * Created by Administrator on 27/10/2022.
- */
 public class Button {
     private String text;
     private int x;
@@ -18,7 +15,7 @@ public class Button {
         this.text = text;
         this.x = 0;
         this.y = 0;
-        this.width = (size-30) * text.length();
+        this.width = (size - 30) * text.length();
         this.height = size;
         this.color = color;
     }
