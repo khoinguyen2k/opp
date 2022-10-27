@@ -3,8 +3,9 @@ package uet.oop.bomberman.entities;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.Collision;
-import uet.oop.bomberman.Timer;
+import uet.oop.bomberman.misc.Collision;
+import uet.oop.bomberman.GameStatus;
+import uet.oop.bomberman.misc.Timer;
 import uet.oop.bomberman.enemies.Enemy;
 import uet.oop.bomberman.graphics.BombLayer;
 import uet.oop.bomberman.graphics.ObstacleLayer;
@@ -186,8 +187,7 @@ public class Bomber extends Entity {
                     if (portal.getY() == Sprite.SCALED_SIZE * i && portal.getX() == Sprite.SCALED_SIZE * j
                             && Collision.checkCollision(x, y, portal.getX(), portal.getY()))
                         if (game.getEnemyCount() == 0) {
-                            game.stop();
-                            game.setWin();
+                            game.setGameStatus(GameStatus.WIN);
                         }
 
                 }

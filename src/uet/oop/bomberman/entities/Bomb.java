@@ -4,9 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import uet.oop.bomberman.Timer;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.misc.Timer;
 
 import java.io.File;
 

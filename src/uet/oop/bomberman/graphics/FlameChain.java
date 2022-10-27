@@ -2,8 +2,8 @@ package uet.oop.bomberman.graphics;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.Collision;
-import uet.oop.bomberman.Timer;
+import uet.oop.bomberman.misc.Collision;
+import uet.oop.bomberman.misc.Timer;
 import uet.oop.bomberman.enemies.Balloon;
 import uet.oop.bomberman.enemies.Kondoria;
 import uet.oop.bomberman.enemies.Minvo;

@@ -1,8 +1,8 @@
 package uet.oop.bomberman.enemies;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.Collision;
-import uet.oop.bomberman.Timer;
+import uet.oop.bomberman.misc.Collision;
+import uet.oop.bomberman.misc.Timer;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.graphics.Board;
 import uet.oop.bomberman.graphics.BombLayer;

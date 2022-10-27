@@ -1,7 +1,7 @@
 package uet.oop.bomberman.enemies;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.Timer;
+import uet.oop.bomberman.misc.Timer;
 import uet.oop.bomberman.entities.Entity;
 
 public abstract class Enemy extends Entity {

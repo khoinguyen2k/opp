@@ -1,4 +1,4 @@
-package uet.oop.bomberman;
+package uet.oop.bomberman.misc;
 
 public class Timer {
     private long start = System.currentTimeMillis();

@@ -1,6 +1,6 @@
 package uet.oop.bomberman.graphics;
 
-import uet.oop.bomberman.Coordination;
+import uet.oop.bomberman.misc.Coordination;
 import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Portal;

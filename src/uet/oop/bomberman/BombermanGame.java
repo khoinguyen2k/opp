@@ -2,12 +2,10 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -21,6 +19,9 @@ import uet.oop.bomberman.graphics.*;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.misc.Button;
+import uet.oop.bomberman.misc.Menu;
+import uet.oop.bomberman.misc.Timer;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,20 +35,21 @@ public class BombermanGame extends Application {
 
     public static final int FRAME_STEP = 80;
     private int score = 0;
-    private boolean running = true;
+    private GameStatus gameStatus = GameStatus.MENU;
     private Timer time = new Timer();
     private int enemyCount = 0;
-    private boolean win = false;
 
     private Media media = new Media(new File("res/audio/background_music_game.mp3").toURI().toString());
     private MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     private GraphicsContext gc;
     private Canvas canvas;
+    private Menu startMenu, exitMenu;
+
     private List<Entity> entities = new ArrayList<>();
     private Bomber bomberman;
 
-    private String path ="res/levels/Level1.txt";
+    private String path = "res/levels/Level1.txt";
     private DataMap dataMap;
 
     private Board board;
@@ -61,12 +63,12 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        //createMap chuyen len dau de doc WIDTH, HEIGHT tu file map
+
         createMap();
         createEntities();
 
         // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH +100, Sprite.SCALED_SIZE * HEIGHT);
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH + 100, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
         // Tao root container
@@ -80,21 +82,30 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.setTitle("BombermanGame");
         stage.show();
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
+
+        createMenu();
+        scene.setOnMouseMoved((event) -> {
+            if (gameStatus ==GameStatus.MENU)
+            startMenu.handleMouseMoved(event);
+            else if (gameStatus ==GameStatus.WIN ||gameStatus ==GameStatus.LOSE)
+                exitMenu.handleMouseMoved(event);
+        });
+        scene.setOnMouseClicked(event -> {
+            if (gameStatus ==GameStatus.MENU)
+            startMenu.handleMouseClicked(event, this);
+            else if (gameStatus ==GameStatus.WIN ||gameStatus ==GameStatus.LOSE)
+                exitMenu.handleMouseClicked(event, this);
+        });
+
+        scene.setOnKeyPressed(event -> {
+            if (gameStatus == GameStatus.RUNNING)
                 bomberman.handlePress(event, bombLayer);
-            }
         });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (running)
-                    render();
-                else {
-                    renderEndLevel();
-                }
+                render();
                 update();
             }
         };
@@ -103,23 +114,23 @@ public class BombermanGame extends Application {
     }
 
     private void renderEndLevel() {
-        String result =win? "YOU WIN!": "YOU LOSE!";
+        String result = (gameStatus == GameStatus.WIN ? "YOU WIN!" : "YOU LOSE!");
         gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+//        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFont(Font.font("", FontWeight.BOLD, 100));
         gc.setFill(Color.WHEAT);
-        gc.fillText(result, Math.round(canvas.getWidth() / 2) - 200, Math.round(canvas.getHeight() / 2));
-        gc.fillText("Your Score: " +score, Math.round(canvas.getWidth() / 2) - 300, Math.round(canvas.getHeight() / 2) + 140);
+        gc.fillText(result, Math.round(canvas.getWidth() / 2) - 500, Math.round(canvas.getHeight() / 2) -80);
+        gc.fillText("Your Score: " + score, Math.round(canvas.getWidth() / 2) - 500, Math.round(canvas.getHeight() / 2) + 40);
     }
 
     public void createMap() {
         dataMap = new DataMap(path);
         HEIGHT = dataMap.getHeight();
         WIDTH = dataMap.getWidth();
-        board =new Board(dataMap);
+        board = new Board(dataMap);
         obstacleLayer = new ObstacleLayer(dataMap);
-        bombLayer =new BombLayer(dataMap);
-        flameLayer =new FlameLayer(dataMap);
+        bombLayer = new BombLayer(dataMap);
+        flameLayer = new FlameLayer(dataMap);
     }
 
     public void createEntities() {
@@ -164,24 +175,53 @@ public class BombermanGame extends Application {
             }
     }
 
-    public void update() {
-        entities.forEach(Entity::update);
-//        if (!entities.contains(bomberman)) running =false;
-        bomberman.update();
-        bomberman.collideEnemies(entities);
-        bomberman.pickItem(obstacleLayer);
-        bombLayer.handleExploding(bomberman, obstacleLayer, flameLayer);
-        flameLayer.handleDisapeared();
-        flameLayer.collideEntity(entities, this);
-        flameLayer.handleChainExplosion(bombLayer, obstacleLayer);
-        bomberman.handleGetInPortal(obstacleLayer, this);
-        mediaPlayer.setAutoPlay(true);
+    public void createMenu() {
+        int gameWidth = Sprite.SCALED_SIZE * WIDTH + 100;
+        int gameHeight = Sprite.SCALED_SIZE * HEIGHT;
+        Button startButton = new Button("PLAY GAME", 100, Color.WHITE);
+        Button exitButton = new Button("EXIT", 50, Color.WHITE);
+        startMenu = new Menu(gameWidth, gameHeight, startButton, GameStatus.RUNNING);
+        startMenu.placeButtonCentered(gameWidth, gameHeight);
+        exitMenu = new Menu(gameWidth, gameHeight, exitButton, GameStatus.QUIT);
+        exitMenu.placeButton(gameWidth -200, gameHeight -50);
+    }
 
+    public void renderMenu() {
+        if (gameStatus ==GameStatus.MENU)
+            startMenu.render(gc);
+        else exitMenu.render(gc);
+    }
+
+    public void update() {
+        if (gameStatus == GameStatus.RUNNING) {
+            entities.forEach(Entity::update);
+            bomberman.update();
+            bomberman.collideEnemies(entities);
+            bomberman.pickItem(obstacleLayer);
+            bombLayer.handleExploding(bomberman, obstacleLayer, flameLayer);
+            flameLayer.handleDisapeared();
+            flameLayer.collideEntity(entities, this);
+            flameLayer.handleChainExplosion(bombLayer, obstacleLayer);
+            bomberman.handleGetInPortal(obstacleLayer, this);
+            mediaPlayer.setAutoPlay(true);
+        }
+
+    }
+
+    public void render() {
+        if (gameStatus == GameStatus.MENU)
+            renderMenu();
+        else if (gameStatus == GameStatus.RUNNING)
+            renderGame();
+        else {
+            renderMenu();
+            renderEndLevel();
+        }
     }
 
     private Timer deadTimer;
 
-    public void render() {
+    public void renderGame() {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -195,7 +235,7 @@ public class BombermanGame extends Application {
             if (deadTimer == null) deadTimer = new Timer();
             if (!deadTimer.isElapsed(800))
                 bomberman.handleDeadAnimation();
-            else running = false;
+            else gameStatus = GameStatus.LOSE;
         }
 
         gc.setFont(Font.font("", FontWeight.BOLD, 15));
@@ -218,13 +258,8 @@ public class BombermanGame extends Application {
         return enemyCount;
     }
 
-    public void stop() {
-        running = false;
+    public void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
-
-    public void setWin() {
-        win = true;
-    }
-
 }
 
