@@ -2,13 +2,13 @@ package uet.oop.bomberman.graphics;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.misc.Collision;
-import uet.oop.bomberman.misc.Timer;
 import uet.oop.bomberman.enemies.Balloon;
 import uet.oop.bomberman.enemies.Kondoria;
 import uet.oop.bomberman.enemies.Minvo;
 import uet.oop.bomberman.enemies.Oneal;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.misc.Collision;
+import uet.oop.bomberman.misc.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,43 +25,90 @@ public class FlameChain {
 
         for (int i = x - 1; i >= x - power; i--) {
             if (i < 0) break;
-            if (board.getEntityAt(i, y) instanceof Wall) break;
+            if (board.getEntityAt(x - 1, y) instanceof Wall)
+                break;
+
+            if (i >= Math.max(x - power + 1, 1)) {
+                if (board.getEntityAt(i - 1, y) instanceof Wall) {
+                    flameList.add(new Flame(y, i, FlameType.VERTICAL_TOP_LAST));
+                    break;
+                }
+            }
+
             if (board.getEntityAt(i, y) instanceof Brick) {
                 board.breakBrick(i, y);
-                flameList.add(new Flame(y, i, FlameType.VERTICAL));
+                flameList.add(new Flame(y, i, FlameType.VERTICAL_TOP_LAST));
                 break;
             }
-            flameList.add(new Flame(y, i, FlameType.VERTICAL));
+
+            if (i == x - power) flameList.add(new Flame(y, i, FlameType.VERTICAL_TOP_LAST));
+            else flameList.add(new Flame(y, i, FlameType.VERTICAL));
         }
+
         for (int i = x + 1; i <= x + power; i++) {
             if (i >= board.getHeight()) break;
-            if (board.getEntityAt(i, y) instanceof Wall) break;
+            if (board.getEntityAt(x + 1, y) instanceof Wall)
+                break;
+
+            if (i <= Math.min(x + power - 1, board.getHeight() - 2)) {
+                if (board.getEntityAt(i + 1, y) instanceof Wall) {
+                    flameList.add(new Flame(y, i, FlameType.VERTICAL_DOWN_LAST));
+                    break;
+                }
+            }
+
             if (board.getEntityAt(i, y) instanceof Brick) {
                 board.breakBrick(i, y);
-                flameList.add(new Flame(y, i, FlameType.VERTICAL));
+                flameList.add(new Flame(y, i, FlameType.VERTICAL_DOWN_LAST));
                 break;
             }
-            flameList.add(new Flame(y, i, FlameType.VERTICAL));
+
+            if (i == x + power) flameList.add(new Flame(y, i, FlameType.VERTICAL_DOWN_LAST));
+            else flameList.add(new Flame(y, i, FlameType.VERTICAL));
         }
+
         for (int j = y - 1; j >= y - power; j--) {
             if (j < 0) break;
-            if (board.getEntityAt(x, j) instanceof Wall) break;
+            if (board.getEntityAt(x, y - 1) instanceof Wall)
+                break;
+
+            if (j >= Math.max(y - power + 1, 1)) {
+                if (board.getEntityAt(x, j - 1) instanceof Wall) {
+                    flameList.add(new Flame(j, x, FlameType.HORIZONTAL_LEFT_LAST));
+                    break;
+                }
+            }
+
             if (board.getEntityAt(x, j) instanceof Brick) {
                 board.breakBrick(x, j);
-                flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
+                flameList.add(new Flame(j, x, FlameType.HORIZONTAL_LEFT_LAST));
                 break;
             }
-            flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
+
+            if (j == y - power) flameList.add(new Flame(j, x, FlameType.HORIZONTAL_LEFT_LAST));
+            else flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
         }
+
         for (int j = y + 1; j <= y + power; j++) {
             if (j >= board.getWidth()) break;
-            if (board.getEntityAt(x, j) instanceof Wall) break;
+            if (board.getEntityAt(x, y + 1) instanceof Wall)
+                break;
+
+            if (j <= Math.min(y + power - 1, board.getWidth() - 2)) {
+                if (board.getEntityAt(x, j + 1) instanceof Wall) {
+                    flameList.add(new Flame(j, x, FlameType.HORIZONTAL_RIGHT_LAST));
+                    break;
+                }
+            }
+
             if (board.getEntityAt(x, j) instanceof Brick) {
                 board.breakBrick(x, j);
-                flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
+                flameList.add(new Flame(j, x, FlameType.HORIZONTAL_RIGHT_LAST));
                 break;
             }
-            flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
+
+            if (j == y + power) flameList.add(new Flame(j, x, FlameType.HORIZONTAL_RIGHT_LAST));
+            else flameList.add(new Flame(j, x, FlameType.HORIZONTAL));
         }
     }
 
