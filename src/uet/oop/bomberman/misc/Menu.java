@@ -23,10 +23,6 @@ public class Menu {
         this.nextGameStatus = nextGameStatus;
     }
 
-    public void placeButtonCentered(int gameWidth, int gameHeight) {
-        button.setPosition((gameWidth - button.getWidth()) / 2, (gameHeight + button.getHeight()) / 2);
-    }
-
     public void placeButton(int x, int y) {
         button.setPosition(x, y);
     }

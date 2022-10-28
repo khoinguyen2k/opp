@@ -181,15 +181,27 @@ public class BombermanGame extends Application {
         Button startButton = new Button("PLAY GAME", 100, Color.WHITE);
         Button exitButton = new Button("EXIT", 50, Color.WHITE);
         startMenu = new Menu(gameWidth, gameHeight, startButton, GameStatus.RUNNING);
-        startMenu.placeButtonCentered(gameWidth, gameHeight);
+        startMenu.placeButton(50, 150);
         exitMenu = new Menu(gameWidth, gameHeight, exitButton, GameStatus.QUIT);
         exitMenu.placeButton(gameWidth - 200, gameHeight - 50); //down right corner
     }
 
     public void renderMenu() {
-        if (gameStatus == GameStatus.MENU)
+        if (gameStatus == GameStatus.MENU) {
             startMenu.render(gc);
+            renderGuide();
+        }
         else exitMenu.render(gc);
+    }
+
+    private void renderGuide() {
+        int gameWidth = Sprite.SCALED_SIZE * WIDTH + 100;
+        int gameHeight = Sprite.SCALED_SIZE * HEIGHT;
+        String guide = "Guide: Press arrow keys for movement,\n" +
+                "   Z to place bomb.";
+        gc.setFont(Font.font("", FontWeight.BOLD, 30));
+        gc.setFill(Color.WHEAT);
+        gc.fillText(guide, gameWidth - 600, gameHeight - 70);
     }
 
     private boolean reseted = false;
