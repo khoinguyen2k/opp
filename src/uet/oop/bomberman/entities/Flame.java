@@ -10,6 +10,29 @@ public class Flame extends Entity {
 
     public Flame(int xUnit, int yUnit, FlameType type) {
         super(xUnit, yUnit, Sprite.bomb_exploded.getFxImage());
+        switch (type) {
+            case CENTER:
+                img = Sprite.bomb_exploded.getFxImage();
+                break;
+            case VERTICAL:
+                img =Sprite.explosion_vertical.getFxImage();
+                break;
+            case HORIZONTAL:
+                img =Sprite.explosion_horizontal.getFxImage();
+                break;
+            case VERTICAL_TOP_LAST:
+                img =Sprite.explosion_vertical_top_last.getFxImage();
+                break;
+            case VERTICAL_DOWN_LAST:
+                img =Sprite.explosion_vertical_down_last.getFxImage();
+                break;
+            case HORIZONTAL_LEFT_LAST:
+                img =Sprite.explosion_horizontal_left_last.getFxImage();
+                break;
+            case HORIZONTAL_RIGHT_LAST:
+                img =Sprite.explosion_horizontal_right_last.getFxImage();
+                break;
+        }
         this.type = type;
         timer = new Timer();
     }

@@ -85,15 +85,15 @@ public class BombermanGame extends Application {
 
         createMenu();
         scene.setOnMouseMoved((event) -> {
-            if (gameStatus ==GameStatus.MENU)
-            startMenu.handleMouseMoved(event);
-            else if (gameStatus ==GameStatus.WIN ||gameStatus ==GameStatus.LOSE)
+            if (gameStatus == GameStatus.MENU)
+                startMenu.handleMouseMoved(event);
+            else if (gameStatus == GameStatus.WIN || gameStatus == GameStatus.LOSE)
                 exitMenu.handleMouseMoved(event);
         });
         scene.setOnMouseClicked(event -> {
-            if (gameStatus ==GameStatus.MENU)
-            startMenu.handleMouseClicked(event, this);
-            else if (gameStatus ==GameStatus.WIN ||gameStatus ==GameStatus.LOSE)
+            if (gameStatus == GameStatus.MENU)
+                startMenu.handleMouseClicked(event, this);
+            else if (gameStatus == GameStatus.WIN || gameStatus == GameStatus.LOSE)
                 exitMenu.handleMouseClicked(event, this);
         });
 
@@ -119,7 +119,7 @@ public class BombermanGame extends Application {
 //        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFont(Font.font("", FontWeight.BOLD, 100));
         gc.setFill(Color.WHEAT);
-        gc.fillText(result, Math.round(canvas.getWidth() / 2) - 500, Math.round(canvas.getHeight() / 2) -80);
+        gc.fillText(result, Math.round(canvas.getWidth() / 2) - 500, Math.round(canvas.getHeight() / 2) - 80);
         gc.fillText("Your Score: " + score, Math.round(canvas.getWidth() / 2) - 500, Math.round(canvas.getHeight() / 2) + 40);
     }
 
@@ -183,17 +183,27 @@ public class BombermanGame extends Application {
         startMenu = new Menu(gameWidth, gameHeight, startButton, GameStatus.RUNNING);
         startMenu.placeButtonCentered(gameWidth, gameHeight);
         exitMenu = new Menu(gameWidth, gameHeight, exitButton, GameStatus.QUIT);
-        exitMenu.placeButton(gameWidth -200, gameHeight -50);
+        exitMenu.placeButton(gameWidth - 200, gameHeight - 50); //down right corner
     }
 
     public void renderMenu() {
-        if (gameStatus ==GameStatus.MENU)
+        if (gameStatus == GameStatus.MENU)
             startMenu.render(gc);
         else exitMenu.render(gc);
     }
 
+    private boolean reseted = false;
+
     public void update() {
+        updateGameStatus();
+
         if (gameStatus == GameStatus.RUNNING) {
+            if (reseted) { //run once
+                bomberman.setX(Sprite.SCALED_SIZE);
+                bomberman.setY(Sprite.SCALED_SIZE);
+                reseted = false;
+            }
+
             entities.forEach(Entity::update);
             bomberman.update();
             bombLayer.update();
@@ -207,22 +217,26 @@ public class BombermanGame extends Application {
             flameLayer.handleChainExplosion(bombLayer, obstacleLayer);
             bomberman.handleGetInPortal(obstacleLayer, this);
             mediaPlayer.setAutoPlay(true);
-        }
 
+        } else if (gameStatus == GameStatus.BOMBER_DEAD) {
+            bomberman.update();
+            bombLayer.update();
+            flameLayer.update();
+            flameLayer.handleDisapeared();
+            reseted = true;
+        }
     }
 
     public void render() {
         if (gameStatus == GameStatus.MENU)
             renderMenu();
-        else if (gameStatus == GameStatus.RUNNING)
+        else if (gameStatus == GameStatus.RUNNING || gameStatus == GameStatus.BOMBER_DEAD)
             renderGame();
         else {
             renderMenu();
             renderEndLevel();
         }
     }
-
-    private Timer deadTimer;
 
     public void renderGame() {
         gc.setFill(Color.BLACK);
@@ -234,12 +248,6 @@ public class BombermanGame extends Application {
         flameLayer.render(gc);
 
         entities.forEach(entity -> entity.render(gc));
-        if (bomberman.isDead()) {
-            if (deadTimer == null) deadTimer = new Timer();
-            if (!deadTimer.isElapsed(800))
-                bomberman.handleDeadAnimation();
-            else gameStatus = GameStatus.LOSE;
-        }
 
         gc.setFont(Font.font("", FontWeight.BOLD, 15));
 
@@ -264,6 +272,18 @@ public class BombermanGame extends Application {
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
+    }
+
+    private void updateGameStatus() {
+        if (gameStatus != GameStatus.MENU) {
+            if (bomberman.isDeadAnimated())
+                gameStatus = GameStatus.BOMBER_DEAD;
+            else {
+                if (bomberman.isDead())
+                    gameStatus = GameStatus.LOSE;
+                else gameStatus = GameStatus.RUNNING;
+            }
+        }
     }
 }
 

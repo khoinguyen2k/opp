@@ -2,13 +2,13 @@ package uet.oop.bomberman.graphics;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.misc.Collision;
+import uet.oop.bomberman.misc.Timer;
 import uet.oop.bomberman.enemies.Balloon;
 import uet.oop.bomberman.enemies.Kondoria;
 import uet.oop.bomberman.enemies.Minvo;
 import uet.oop.bomberman.enemies.Oneal;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.misc.Collision;
-import uet.oop.bomberman.misc.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +122,7 @@ public class FlameChain {
 
     public void handleDisapeared() {
         if (timer.isElapsed(750))
-            flameList.removeAll(flameList);
+            flameList.clear();
     }
 
     public void collideEntity(List<Entity> entities, BombermanGame game) {
@@ -132,7 +132,8 @@ public class FlameChain {
                 for (Flame flame : flameList) {
                     if (Collision.checkCollision(bomber.getX(), bomber.getY(),
                             flame.getX(), flame.getY())) {
-                        bomber.dead();
+                        bomber.loseAHeart();
+                        break;
                     }
                 }
             }

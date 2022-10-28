@@ -20,11 +20,13 @@ public class Bomber extends Entity {
     private int mainCharacterSpeed = 5;
     private Timer timer;
     private int bombAmount = 1;
-    private boolean isDead = false;
+    private int numberOfLife;
+    //death animation.
+    protected boolean deadAnimated = false;
+    private Timer deathTimer = null;
+
     //data for movement.
     private ObstacleLayer obstacleLayer;
-
-    private int numberOfLife ;
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -43,8 +45,6 @@ public class Bomber extends Entity {
     public int getY() {
         return this.y;
     }
-
-    private final int FRAME_STEP = 80;
 
     private void moveRight() {
         this.x += mainCharacterSpeed;
@@ -69,7 +69,6 @@ public class Bomber extends Entity {
 
     private void moveUp() {
         this.y -= mainCharacterSpeed;
-        this.img = Sprite.player_up.getFxImage();
         this.img = Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1,
                 Sprite.player_up_2, (int) timer.timeElapse(), BombermanGame.FRAME_STEP * 3).getFxImage();
 
@@ -107,12 +106,42 @@ public class Bomber extends Entity {
             }
     }
 
-    @Override
-    public void update() {
+    public boolean isDead() {
+        return numberOfLife == 0;
     }
 
-    public void setImg(Image im) {
-        this.img = im;
+    public int getNumberOfLife() {
+        return numberOfLife;
+    }
+
+//    public void dead() {
+//        if (deathTimer == null) deathTimer = new Timer();
+//        deadAnimated = true;
+//        if (deathTimer.isElapsed(1000)) {
+//            deadAnimated = false;
+//            isDead = true;
+//        }
+//    }
+
+    public boolean isDeadAnimated() {
+        return deadAnimated;
+    }
+
+    private int DEATH_FRAME_STEP = 200;
+
+    @Override
+    public void update() {
+        if (deadAnimated) {
+            if (deathTimer == null) deathTimer = new Timer();
+            if (!deathTimer.isElapsed(1500))
+                img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2
+                        , Sprite.player_dead3, (int) deathTimer.timeElapse(), DEATH_FRAME_STEP * 3).getFxImage();
+            else {
+                deadAnimated = false;
+                deathTimer = null;
+                img = Sprite.player_right.getFxImage();
+            }
+        }
     }
 
     public void placeBomb(BombLayer bombLayer, int x, int y) {
@@ -130,25 +159,9 @@ public class Bomber extends Entity {
         mainCharacterSpeed += 2;
     }
 
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public void dead() {
-
-        if (numberOfLife == 1) {
-            this.isDead = true;
-        }
-        this.setX(Sprite.SCALED_SIZE);
-        this.setY(Sprite.SCALED_SIZE);
-        numberOfLife --;
-        this.img = Sprite.player_right.getFxImage();
-
-
-    }
-
-    public int getNumberOfLife() {
-        return numberOfLife;
+    public void loseAHeart() {
+        numberOfLife--;
+        deadAnimated = true;
     }
 
     public void collideEnemies(List<Entity> entities) {
@@ -156,14 +169,9 @@ public class Bomber extends Entity {
             if (entity instanceof Enemy) {
 
                 if (Collision.checkCollision(entity.getX(), entity.getY(), x, y))
-                    dead();
+                    loseAHeart();
             }
         }
-    }
-
-    public void handleDeadAnimation() {
-        this.img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2,
-                Sprite.player_dead3, (int) timer.timeElapse(), FRAME_STEP * 6).getFxImage();
     }
 
     public void pickItem(ObstacleLayer obstacleLayer) {
