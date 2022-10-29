@@ -10,7 +10,7 @@ import uet.oop.bomberman.misc.Timer;
 
 import java.io.File;
 
-public class Bomb extends Entity {
+public class Bomb extends StillEntity {
     private Timer timer;
     private static int power = 2;
     private MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File("res/audio/Explosion.wav").toURI().toString()));

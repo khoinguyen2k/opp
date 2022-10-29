@@ -2,9 +2,8 @@ package uet.oop.bomberman.items;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.entities.Entity;
 
-public class FlameItem extends Entity {
+public class FlameItem extends Item {
     public FlameItem(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }

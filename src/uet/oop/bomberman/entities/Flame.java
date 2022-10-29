@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.misc.Timer;
 
-public class Flame extends Entity {
+public class Flame extends StillEntity {
     private FlameType type;
     private Timer timer;
 

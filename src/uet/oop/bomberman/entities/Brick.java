@@ -3,7 +3,7 @@ package uet.oop.bomberman.entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Brick extends Entity {
+public class Brick extends StillEntity {
     private Entity item;
 
     public Brick(int xUnit, int yUnit, Image img) {
